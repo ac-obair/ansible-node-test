@@ -1,0 +1,20 @@
+- name: Install web server config files for pressr
+  template:
+    src: "server/quaternary_web_servers/pressr.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/pressr.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for pressr
+  template:
+    src: "locations/quaternary_web_servers/pressr.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/pressr.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for pressr
+  template:
+    src: "upstream/quaternary_web_servers/pressr.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/pressr.upstream.conf"
+    owner: root
+    mode: 0644

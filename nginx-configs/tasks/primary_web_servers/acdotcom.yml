@@ -1,0 +1,20 @@
+- name: Install web server config files for acdotcom
+  template:
+    src: "server/primary_web_servers/acdotcom.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/acdotcom.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for acdotcom
+  template:
+    src: "locations/primary_web_servers/acdotcom.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/acdotcom.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for acdotcom
+  template:
+    src: "upstream/primary_web_servers/acdotcom.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/acdotcom.upstream.conf"
+    owner: root
+    mode: 0644

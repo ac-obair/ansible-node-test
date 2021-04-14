@@ -1,0 +1,36 @@
+---
+- name: Copying nginx.conf for primary_web_servers
+  template:
+    src: nginx.conf.primary_web_servers.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: groups["primary_web_servers"] is defined and inventory_hostname in groups["primary_web_servers"]
+
+- name: Copying nginx.conf for secondary_web_servers
+  template:
+    src: nginx.conf.secondary_web_servers.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: groups["secondary_web_servers"] is defined and inventory_hostname in groups["secondary_web_servers"]
+
+- name: Copying nginx.conf for tertiary_web_servers
+  template:
+    src: nginx.conf.tertiary_web_servers.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: groups["tertiary_web_servers"] is defined and inventory_hostname in groups["tertiary_web_servers"]
+
+- name: Copying nginx.conf for quaternary_web_servers
+  template:
+    src: nginx.conf.quaternary_web_servers.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: groups["quaternary_web_servers"] is defined and inventory_hostname in groups["quaternary_web_servers"]

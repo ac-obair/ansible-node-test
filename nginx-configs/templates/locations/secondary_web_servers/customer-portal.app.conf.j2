@@ -1,0 +1,26 @@
+location {{ item.path }} {
+  try_files $uri @{{ item.name }};
+  {{ "root" if item.path == "/" else "alias" }} {{ webapps_root}}/{{ item.name }}/current/public;
+  location {{ item.path | regex_replace('/$', '') }}/favicon {
+    expires 1w;
+    add_header Cache-Control "public";
+  }
+  location {{ item.path | regex_replace('/$', '') }}/assets {
+{% if item.path != "/" %}
+    root {{ webapps_root}}/{{ item.name }}/current/public;
+{% endif %}
+    expires 1y;
+    add_header Cache-Control "public";
+  }
+  location {{ item.path | regex_replace('/$', '') }}/robots.txt {
+    expires -1;
+  }
+}
+
+location @{{ item.name }} {
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_redirect off;
+  proxy_pass http://{{ item.name }};
+}

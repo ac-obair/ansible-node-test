@@ -1,0 +1,14 @@
+ntp_servers:
+  - time.arnoldclark.com
+app_account_username: deploy
+sudo_nopasswd: true
+sudo_users: ["root", "%wheel", "{{ app_account_username }}"]
+postfix_trusted_subnets:
+  - 127.0.0.1
+postfix_relay_domains: activacontracts.co.uk
+mailcatcher_smtp_port: 26
+gems_as_services:
+  - { name: mailcatcher, ports: ["8080/tcp", "{{ mailcatcher_smtp_port }}/tcp", "{{ mailcatcher_smtp_port }}/udp"] }
+nginx_main_config_template: activa-nginx.conf.j2
+phpsc_pool: activa-email
+phpsc_version: 72

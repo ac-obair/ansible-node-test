@@ -1,0 +1,19 @@
+server {
+    listen 80;
+
+    root /data/webapps/pch-affinity/current;
+    server_name autocentre.acvm.com autocentre;
+
+    index index.html index.htm;
+    access_log /var/log/nginx/pch_access.log;
+    error_log /var/log/nginx/pch_error.log debug;
+
+    location /affinity {
+        try_files $uri /index.html;
+    }
+
+    # tone down caching for html and js:
+    location ~* \.(?:html|js)$ {
+        expires 5m;
+    }
+}

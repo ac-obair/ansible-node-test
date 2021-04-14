@@ -1,0 +1,24 @@
+location /api/reservations {
+  try_files $uri @reservations;
+  alias /data/webapps/reservations/current/public;
+  location /api/reservations/favicon {
+    expires 1w;
+    add_header Cache-Control "public";
+  }
+  location /api/reservations/assets {
+    root /data/webapps/reservations/current/public;
+    expires 1y;
+    add_header Cache-Control "public";
+  }
+  location /api/reservations/robots.txt {
+    expires -1;
+  }
+}
+
+location @reservations {
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_redirect off;
+  proxy_pass http://reservations;
+}

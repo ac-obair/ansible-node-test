@@ -1,0 +1,65 @@
+---
+
+- name: Copy init.d script for app servers
+  template:
+    src: "app_server_init_script.j2"
+    dest: "/etc/init.d/{{ item.app_server|default('unicorn') }}-{{ item.name }}"
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - "{{ rails_applications }}"
+
+- name: Copy systemd unit file for job daemons
+  template:
+    src: "delayedjob-systemd-service.j2"
+    dest: "/etc/systemd/system/delayedjob_{{ item.name }}.service"
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - "{{ rails_applications }}"
+  when: item.job_workers is defined and item.job_workers > 0
+  register: systemd_job_daemon_result
+  tags: delayedjob
+
+- name: Create systemd service for app
+  template:
+    src: systemd-service.j2
+    dest: "/etc/systemd/system/{{ item.app_server|default('unicorn') }}-{{ item.name }}.service"
+  with_items:
+    - "{{ rails_applications }}"
+  register: systemd_app_server_result
+
+- name: Ensure app starts with OS using systemd
+  systemd:
+    name: "{{ item.app_server|default('unicorn') }}-{{ item.name }}"
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - "{{ rails_applications }}"
+
+- name: Ensure job daemons start with OS using systemd
+  systemd:
+    name: "delayedjob_{{ item.name }}"
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - "{{ rails_applications }}"
+  when: item.job_workers is defined and item.job_workers > 0
+  ignore_errors: "{{ ansible_check_mode }}"
+  tags: delayedjob
+
+- name: Use chkconfig just to be sure it starts on boot
+  command: chkconfig --level 345 {{ item.app_server|default('unicorn') }}-{{ item.name }} on
+  with_items: "{{ rails_applications }}"
+
+- name: Set logrotate to rotate application logs
+  template:
+    src: logrotate-app-server.j2
+    dest: "/etc/logrotate.d/{{ item.app_server|default('unicorn') }}-{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ rails_applications }}"

@@ -1,0 +1,9 @@
+apply_host_file: true
+gems_as_services:
+  - name: redis-stat
+    ports: ["63790/tcp"]
+    pkill_pattern: "redis-stat"
+auter_cron_prep_spec: "0 5 * * Mon,Wed,Fri,Sun root"
+auter_cron_apply_spec: "0 6 * * Mon,Wed,Fri,Sun root"
+web_builder_db_username: web_builder
+image_crawler_db_username: image_crawler

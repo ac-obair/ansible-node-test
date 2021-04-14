@@ -1,0 +1,3 @@
+nginx_default_server_tls: true
+nginx_default_server_cert: tls/iweb3.arnoldclark.com.bundle.pem
+nginx_default_server_cert_key: tls/iweb3.arnoldclark.com.key

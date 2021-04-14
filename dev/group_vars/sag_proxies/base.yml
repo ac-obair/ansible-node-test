@@ -1,0 +1,38 @@
+haproxy_template_file: haproxy-sag.cfg.j2
+haproxy_generated_config_file: haproxy-generated.cfg.devsag
+haproxy_monitoring_port: 4443
+keepalived_shared_iface: eth0
+keepalived_shared_ip: 10.31.2.70
+keepalived_router_id: 70
+enable_epel: false
+useful_packages:
+  - netcat-openbsd
+  - ngrep
+  - rsyslog
+  - vim
+nrpe_allowed_hosts:
+  - 127.0.0.1
+  - sysadminicinga.arnoldclark.com
+  - 10.150.232.18
+haproxy_setup_firewalld: no
+haproxy_setup_ufw: yes
+haproxy_ufw_ports:
+  - { to_port: 22, proto: tcp, rule: allow }
+  - { to_port: 80, proto: tcp, rule: allow }
+  - { to_port: 443, proto: tcp, rule: allow }
+  - { to_port: 4443, proto: tcp, rule: allow }
+  - { to_port: 5666, proto: tcp, rule: allow }
+haproxy_tls_files: ["sagprxvip.arnoldclark.com.bundle.pem", "test.purchase.arnoldclark.co.uk.bundle.pem"]
+haproxy_tests_urls_template_file: urls-sag.yml.j2
+haproxy_test_suite_host: "{{ groups['test_runner']|first }}"
+haproxy_setup_selinux: false
+haproxy_install_socket_tools: false
+haproxy_stats_username: admin
+haproxy_tests_packages:
+  - python3
+haproxy_tests_easyinstall_command: easy_install3
+env_variables: []
+cfu_server_ip: 10.2.1.96
+abyc_server_ip: 10.150.234.80
+smo_server_ip: 10.150.234.92
+smo_host_header: dev.sales.arnoldclark.co.uk

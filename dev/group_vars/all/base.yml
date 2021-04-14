@@ -1,0 +1,156 @@
+auter_cron_prep_spec: "0 5 * * Mon root"
+auter_cron_apply_spec: "0 6 * * Mon root"
+set_proxy_env: false
+ntp_servers:
+  - time.arnoldclark.com
+ansible_account_authorized_keys: | # Only gocd agent key should be here
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjsYuAZ7iSUA9AulClum/fWxPoMq5SftA01ngXkLlqT7GkkSdHL7Md7AXjjA8IMe8IOsKlRSSe76Gh5J/paskZh/0/yjm3Klz+poqbGqtS5MET8uhWrgEAzXEvK7v9yiD2oiuqO0PJ1QCyTKEr7loUeIvSmS1is3L0BW+UYNVo+NTiVVs0KIq6S9t2lUnpWcjTglKp60bGAMknyWm7lQqWaJIHHu7tet5imR5HM8UpC/Jy8C0lX3/l0EDycvi02VOXve7tjUcQPyUAENljh862ORHOAGUiesr2HMmSFRHTYlhnbif8RZXYXbS36DmoK4+8l3gGZdAxFsaDctgXClmB gocd-dev01.arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMgarkrDFcQp4cgtX3QEOELVcT3XTG3vWNg61mNIT/cYvdqSHUmvytNDJmSmZkEY4CDwpB1Go3hQTir3Okf9cTjhLPQr7Ac0CJK6dSvH9kGW1NJ2TqKh/hQYb/twahWOooz8sDC2vCWJpw52SFRCAfsMP/0CgCVOpbmpevciqkMFoxunt2zNDPLTbh1MaSR/BuGP+GstjLWJZVcKjPRdP4YKjCN1RoFErCwN4gqgt5FFF451dPzml/827Xa+jP8WmDnQETvppmMZrypUeNksdpHhH4bGNyTOfNOjGmymuxc+u5GKf4LZpURFq3FxuoxNXhT7ET3/+Pg0OW/v/sYpYOrUbefByjZJW/odEaY6yxYQ3TP4Xf9PHomHxfRJvQ2d/Cf9ouzJ6ZtHEayM5lHviZV6jTmNJDphjDjYShxPqRNfeBQgawEPHp8U1WTjby0hwJZtSSX+h6Jri+R8PrF5hUicXy+MM21+rc+WB4NVvpiF3Qkf3KjH58IDnyKrqPlo7OdkHBj28QHt2jUt4FDPw2GewSR0p0E8+Gk5YCnijdRGLDwyYnpRBvtmjnmAaIFla8S9QufU1PPDMOIbUGMrYPF094CFIdVG8cJIaKzkyuWCpL2wjIBZGdGHBFaBoZOlnB4pksnaWk1W4/B1ayhUIdfUjyknDluDyd0RuMZxMkyw== devops@prdutil03.arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAz1rk2zK6bDwWoQLzDBNnWl4Cx8gJ/aiXVueVhQ0qRRhp6WYbWc2VYsxJRHJGRyfUzqlXtbJekEd7yVd06MtgliDJMydwyxIffTdNLp7MjTDLBTEADL4WEStDcR6hZmIUuMPsEgxU5aG8F7acJJnLrNP+wdLbW/5VNT3mevOjrwKupGvrKQWzxAYdoxXYpVdwVITupBfT7HmqsEy7nbpFWW6zfhIEy6xd7dgYn5ZYoZakNUpIwzKi2hhgiqgNbXulF0Ve3+O/FtOqmtSnG6RyL71E3itIWMnLDSrvq8SQvI979udUrOU/iVxv5E6TxoYgFksJFJBZiBb+8O41ObTU1w== go@devops-gocd-dev02
+app_account_username: deploy
+app_account_authorized_keys: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjsYuAZ7iSUA9AulClum/fWxPoMq5SftA01ngXkLlqT7GkkSdHL7Md7AXjjA8IMe8IOsKlRSSe76Gh5J/paskZh/0/yjm3Klz+poqbGqtS5MET8uhWrgEAzXEvK7v9yiD2oiuqO0PJ1QCyTKEr7loUeIvSmS1is3L0BW+UYNVo+NTiVVs0KIq6S9t2lUnpWcjTglKp60bGAMknyWm7lQqWaJIHHu7tet5imR5HM8UpC/Jy8C0lX3/l0EDycvi02VOXve7tjUcQPyUAENljh862ORHOAGUiesr2HMmSFRHTYlhnbif8RZXYXbS36DmoK4+8l3gGZdAxFsaDctgXClmB iweb_rsa
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTsGLwqzYzytYin1MAv4ULfGPRtW555ZuvUXrrK8BQDUyoiCJL6wlRJuGad8pMp6cPY2QJeY8kISF4o9fl1bbEj7qEmTz6L0ytbslRKNvne3hQbA1YOlr+eJtHYMIzaU8k0FqUisUCe1JkOiWlml5vGKqG0bUjS96+qACeIMlvucm/Q7XmP0Pc2HOelksacmbG2OiQcZ1T3rvYDCZt4glplnfZtoyorZHiUXfsHSu6kl4HrQ7T3Vtg8tCjgnMrVZStxhG1eYnyI41fiD1ku3HNi7eocJODQwM6pHF0oYyhnv4yT0aNe/rs7XQEP/WKLyzOYlCkqbJhLYQY1OMGdmi7 root@devops-rdp01
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdbQ0GdgVUA8HlU+6E5RFFV6YuEi6qeZXumuW9D0aj9Uk4K0bMk8W+oZipKJWXqAraBJJS3MvXTcd5AeAQzxH1U9WqSbGcqpiiy6WQt/60oaeX1MxXZvkwidvDspFfuYwIZ3t9bkop9KhTR2KozL+Pler1fkHMwFNWVOCe/AEbURy9TJLtAKFJNfBhPgH8pjx4Etx5o6AHOzVXkYQKjKkzM759kRNlNb7V40p3ds6QgvLxC5Br+5ZSI2XAPHh0a7JqDUJkf/iwpgXm4wcyW9UjJ/VCpfr5H7QAfQZp3MlSSHo2e1yrNmzbaFgK8U25gOlDKhPcgWi5QRBZwMqWq2vcymNFMyeGoBipl2NJ5/eqiAhWm2ESNantI6eIHfPu8tCBThdY8oUllhVvsIcSH1KHs9YDypIBpQ0dTpgwSzfs3v7Dx2pV7HukWufgmZXnzpVdOKNBIoJ/IfnpoTjyrKosEq0h3NrLNoXfWVNnndBQsoRbT1fZiAum9inOlesq9/xDvJWF95kzQKczuKVpEiC70vm7pe+s3c+XWSlc7QMou5GEb4prXz07PKUeEv1UvaFb/yEb+03F1z+icuFX4i89BM8neRZZjFAw7s+QkycJN3rqwVcR3h9vKn2p4DRrKvaEeNYOPB1qxsQciuQaPvbr4NdQtGG0B0+0nF4O1WhIOQ== euan.cockburn@arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfXM21kfNyU8DEVAQmM/DXKPd/IsMbS28WkdZa7o8HKuzxZ30wn9D9SuJHkzSqLlq0nLfjCPrMs1eqtgq0rp1luqAaoJWVyrXlojGy5PsrujXmNzq9bmR7Uw+Iv8FcOLPvzuKDmrmwGl3Et7mYQHSqaWQZWzmagoOapx2IrOVxy6oxxBH2y3Qyu0D0qWfc0nHwpLHekwVH0gWJN0pd2zeU4zTr9RMc78Kwnlzxz+CV0R1x/dcqrS8e4Dz9XmkH6XC677FhTYCG9/jmCsSgxaD+r3vX10lMKUdjoxLpstDkwZMlSxgGWHi3fc+34qcHkz9Kkklj4ebV/vuhUjDSG4Er johnmailey@John-Maileys-iMac.local
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDK5zQ+CAMqFxAiSkzmFdQN7MFjOQjsip9euMQNb+zxaZEmFh7idszGvwtKogqCZvJB2DMR0vMUSLF5mA46FO2U+PCTZl43E4kMBwcz6ZBBN2C1XsXv7Y3wK4PkKP7zsPvMcLkMDC/V9cpMtoA10Ri23YsrVpdztLCA1nNUDiGHbZURvN70Cof8ARFmma0RJYVFX4UR/RoBHDo+42c1cIEg2Gvdm87NJPa4supQzn8s3cF6me2oNSDf/mpzrXTSmnN93Xt1a7H0ZyCM/rVn4AASHB56M3LWMwKNQ824OHkD5LcZJAGwCXSOMYIQ6rlOf+1hqM71Hw7DlmDcP6W108Vh e0056276@ZZ38401IT.local
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeHgXN0K5do47ypkSKsbLdNnrh5WR3grxF7h9hqGqc3dxFB93qDoWz3ErKHMurcuFd0FbDdpTLbxxi/PdyNzNnE5prwEC4Mu2tUcHLUU4GaSdMOUC78t0mwuFCg/C10zstcY8E+3j+MwDkyMEo2502Yr/KJFG/JVqwitFAdFV7eY4HUUHF0WJ8Ho2ERJJL2AKTeQIWT1847RdVoj15yCQipdie6Jmrxju9rcnrnrmgMebirzyXETiUv5NrfYr0ZO96aLRVWBudHa+rXNLkgIRN/q5nwUMCHZJ58v61t3mpe2/AmexKps1wpF/Q4kZJV8k6Kfn/6ZWDhgceSMdreyuL riccardo.margiotta@gmail.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAX2u5SCoKcFT7jEom6lq1aAeqGwXRxg+t4Rktv80LWcF+4c1ywjeHeLKZ4Xq5pZQ/TCB/lk7DXolSC3tikfj6MUo1FHCnlnRGnrkdz02nCOBcbEqNEvbP0RardWspR5xPxFg6nQvmx2Ed7zjw0ZUOQZ+I0Z0qrWj6aze2ucBikc8R8sapzkBEHKoCOvX3eDb7Txw6hg3SwwJp9dOEdfBe7nsD0nSvqP6576Vtj772TkK3/hFLzX6l2Omow+Tx9Y24xkCJ3rCTb69qCwQlGoyMeCs5JVxJK5wmyyTXv8uhb/l22FGbOeSOyDbNE6x0l86lAVw+iwwjSR1nlAh1rZP5 gib.screenmedia@gmail.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCsKJczRvTWR1TZnKOtJTWP/LHh/acTOPlBk01q4TQdGrPQrknLHdLeP1Np9rjR+9PcC0v0OBfi0YEGkZ2DW0m2XKuB9TEEDzSymFBuLMyrGGCQtmIGBIgslKh58rvUKeE+WahtjCV32sOlVUVP+CwT88KN67ZqyxOhBhJGwbRBPok2uCM84KcOAycGna6wTy9/ADgZ6MgzLhgtZQruO0yGrX9XCG1tHSGBsZDjqPV7SWiYhnK7ua5UcQsFia/RJLY4pRQd01gonJ6kQXG/AVDd1i3wv54AtCk5hnTG/2TbzftblVHTv/Zrfh9iROwCRM1VBwFxjui0JLSSJqyf/2HDHF+nN5kJ4cZeJu5YQGWKNrxxRnzBkpY0Bx+hPT5QF0wkWpO+jZOW8c0xjpJ9TbLerQ+LZ+G8mRADtb0+pCvIGk+IkdePJB8geMXds5KxdBXLz2o8Fq2RrhRzO14xA1iCOrartxqNQRC8Y4A14TM3aCxICTxLRoVLzpB+bSZHTk5ya0Tuy83SCYDsqHIQGOGJpBfgZ6TFJPG6FQrUWT4ke2r1lFryD6dxlHIXufbduxQtHYA/s0V9h8TaCeDTzZteOq+R+IzJaJq/roMVffoKCSNNPysleJGyjFkcAkf4q4OV3A7xDHgxERHR4DZgCVJWbMHIKfYvlxIpi9wlmKSKQQ== michael.morris@arnoldclark.co.uk
+  ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEA1WUTqvjOgCelKbxIvuJDAIqSx1hfi3/ADbDa+VknkyAwbTtzA4MvbMymtfLSorTZPK/v13pzFJA86gkBZ20sPYgRCKbPFu8ZO8ZI5R0up4UWHrdTcMP/QLt3Mx8qoedNbNCTpYxadr09feWEaFzDoUxSwEnbriMetb38pTzLvhiy5M0YqLxGU7N+vKZtV+FXECl8DhA/ztqUAQSFUt5hz6rCDdms2VzEypEJ/eIQbOIQfI3CdLw7iXbvh8yQCdAgukyZfIflCzptU5LXAa3EbniZ+1SW9fDebrM8SjkZFNbTDhieWSNqvEZdwzRhM0GdXK9ni9idNZ/hOlkAsdvXjb5M6go4zIDJs2082ifhGCHCdmZolJtAcaVtulLZaloKnsxQnR63TVhn86vQZWTGcOeyJutmxpobtc8E3HyKtkTqbEStR3D7RS3Az2tr4Fe0Mv6VzaVZvnWttTi7lEQUnAHnLlSQZH/u/T51s4Tz9qkmb/9YOLUfcD6L4eqZROgfnolJrwRUnxa5WzL5yBPb1pCTSrgqqzTniA6YlKtFlRtblj7CDhRURRLH6fpz6mLl4z113W8vc8YBqZ5EWTBcPE9m6veeWpDowscsgfiSml4em7jAqg0aGjsiyP0ByFIwrAKjW2Hi+F/t9qNojxIv/hpcVRzs8z852yFwHThKQ08= craig.whytock@arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAlc5NkfpAjIL/HTONzMf7fGsFFkWnopzwJGTtgoxJ7FVCNN32PWispxXVh2fFGreedKbArnpH6pR/6rZnsFyoMtQXDDZzmmqXJTniN/5IA/wJSEu+YgRrGW2n21WYHE1OH5aD/9lvKmSxJ4IteBJYhc+7Ma2GrwDVr2E+MJzBqFOXlOxeLqy14Rw9NkdQucndphdOBqwklp4qeX8pPoOz/cjTaL1WBpMz3PlMY8rYop6txdgmUodgW6Ykgvbw2yoq/xjleEsqNKcSXcbXkPhOA9skL7E/2rRhu4qiM/8FDEF8tXAXYl0EXypt7/QYUFGugJAht1AoW11ZoI5GWJuRdxmDX+rabVsynHgw4C5PzbWI1BpJIXx55BLhsTW70oe8mpLpn9bIPZZAUJ5TSIqmDyjVTMjxVnmBkZv2sPIgB1XOyO8JkYLfDBXwfYFIHICUxu9ZQuyZ3Odbn2k8bJm+onNJJe45PJOil/CY2l6+rVzAWGFekYtsp/6ZVlNIXHm/kOZjCMz0XX0j9EY5mj5+JfK4XdzK2LrEeSrs5iEv20+QC4LyhEq19XcWmFv9zP4hSw70G9jk6c9ROc9KotWjR9oiAjbbUIuDzF7EGtN8PQglwKnllKATNqb/MiDGbPQ2k1cEqdn2dqB55Xtmp5PWjCeCF11NP8NuLNF5fH1FatU= deploy@acimage.arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL0481CWAo9XvPPU6FTsK5Jd5fttHeElGHoZG0NEuiTyqaul+8kpITk4pPWwczLB2cvzRUVyFHfqQ1T+F4BL+XLqL8zqSCouGNw8twVZXotVx7emXykwYTwXitvwDZevzqMVdwCx3yCbYW1cIllIN0m1YKeKKQfSp1jtmcWjCuwIIkKsh07gH/RvY2T4pz07lzDRLkK6F7DqDFilqQWaVkdgp7GueyKTOH7QTuEGMlKIhFCJ+9QTNBp7E89qacyb3zSpLibi6qR89uXG7Eeosxtf+q7BzfyfS8a1K7dDGsScUKolLKQqu3Jrr9mslte5VBXpKmu3FEJ9GXiyOBtseL Mac an Lighiche
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCm2pktILxFYwcpXO3ckJtlIngI6jTLQZO/AnbbYKPHE3X9Btu3OWwgDYf/YwAZSti/NVVJw1WzSTErltElEieOASyYxkx+qKL97KqOFLm3Z0SS2xg1SwgaO/yFbQ3/x5gTvCwCd+71VPBlIJxORt6SXCqpZKwhOJKeYo6CYX2Bzua0GDXCpLMj1vmstMEJpn150qpwtRzIHNCJYHKuMtIOXMKY/NabGmPiPigkVhLBrpkPhlslmFVNWkx/WKdN23IyQZeO63pU1X+ZlYDdWxBR/Y1IeucIpF9BmfYxYOY7ZzWhVUMqOIrzd07BRHBsY/yBHyNBQtLa8NREBTHrHFrfHknVNH2cs542p6f6DjdV/V36w1F2HVgXXievCjehdvxLOloiNJyBZuiRQlyvkNrMG2xjogaBYs76n6yNogNoRJuu1g0lBVUFH67e6uZNxtcR0TXJUiur0BuCFxdvCtZZ0eeHebarIM6aRl+wEIZwxV+Ed1Nckgp3xrxiggk7PxDMTTP/T+c1NIxsakYF9Yt7o+0ZGmt9/YOz3otl4uiVdVWMraNrXT9jelm4rXXmJN7vRsqS0YH/hy0v5undwTq51dGIWehTG4Oi+iq0Ruv4oIGsMHyU6vFJdjX2lI1sxDG53L6XjxFwAbkikIcMRsAQYW7TQhWRTPOg5SsO5cQH/Q== melissa.quek@arnoldclark.com (dev)
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGteWH1j7k7nuez5/ZFlDbT7wbfcUljRRKOraORD4Ne38knFa+Nk9TqD7YCyBftpdVSQSyMs8ak0nmuS9XIGjaSHviaoLcXzBJCGksZShfwBWL5lU3iiUL3HpSvfN+H0hqqOVnMCP9OuCgtGV8TC0tsZNbkt/olWYMP4+KwOMBiaagPu26MQEe4I5Tv/fQUAoAJLcV5kMwqBeqBX19oLHCcQRaIG7VuEDe0YhkzYgjSk25Syze2UjA5SC1QEHKcTLcLZnQr6L74VpKdU1abUMF/s++3b9hfFF8No38B+jb1JvU4Vns06cs4whTbiAkCLf83W/yEK88Srg8B0lzCMkY38e+M4ZTH1LgenebwQlek2eNtgKD7aM8ApQPjZL8oSJRp67o+i9pvCKT4T1X+EioLApIAzaSbRCxgZpqcEpisgVBjksYQudIRkruSrD5CT+JVIbZQPOK0V05HK8luntj+udTEBxjvLsiPyPMbfvgk8vbGQ0HE9KxA7dZtYOGzV4r0Ap9MpEXvsBsdEC5gx713xQEOsgD1gRG1xIXrg8nYFLfFjEC/dzSN8wEwo+Yh45UtLsQW6RO2LG0Hdmkz9SgSpkkWH536DqOVe0k/RXKJAMduok+rLk2/cjROwi2glVbu4eWf9Ua/nxcouX8pFnyD+3gYLF+3CO7kb7vVdV+WQ== robin.skilling@arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCamLjQS7GTgXPEkQpOjgtcxGx2yLXN/rrZ83glWGC9xHn8T1VO/SjWJnsoVbhZ9+rpD7wQNVKauQJNL+00gfGNTDzzJa8CYgSSS87bwWydTsapWAzB0jf6xkGJNIuVFnU7ky30X5LGxVVDe/zlRDRmugRpi3iQcfNVYUgpuZaqGKi2c1JtHnGmGmUdhdcvwsG6g/PvcKSPbleD7LasgoAP8Gwy+dHGBp0WrChEn6c6qHVJtkuf2zTbTxlpihMZkGOmuoyD6KbZeapzSsGNjnhxLcEI1+zosjMewx6rAj5tPdZqbO7gxsGcvHngSQtC7PwfPC3FedA2thSpnAfy7HpoQEDAtD2EQ6V9kQD0CIAybc9FpqexRvS1GS40rkIuXkL0F77Kj7oCJepRgF+5CAGrQsBqBSiKvJYCMGMONReNkxp/sGXU6P54TbII3t9ku7YThx6+rRqLJF1ngc1l7KDC/LYOfetfSA2hGaScCXjQrxxgW0Ucn6f/5PvencbTra+5ug+B+qB669iKXkIHICxlkmFybg9HwU1n3wSsX1k8FKAN7XxuPYf26dzlVUrxKqQAs8FoJ78gzas7a81eAPFBLaZHaFyNPTZTsQDXtHmzccic4dlMAVS4rkrwMNbl6tLT3XAYdPaWW4lkvolw3nYEhHOhUpVyMOSXyPTj7Os/oQ== radoslaw.lewandowski@arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7pUYh9uaYEoscZmy4rhTMztsIJ1HcKl1Y2rkdLkfuSqNmM+oRuyWwvSsng0INk97qXqadJcGYmp5Ma1yvPOJGDTgkHgqczYHc6RXeTDxqrEz7Os88xaeIh4YBMitSotswFpBS0vKf+AXuk/8Xbmti6QUhiMhrqN+fJRnAN/SGr9oIXbCpLl4GPWZPenuwrUd5JDxcCHAShqf086pTdLXSoPL8bSfcJ7x5cqPPFpL5lKP0Mr/AsAVFGzWOswUhFGaVcthY2pCPeS3Qkk3RJs3YiLrv7t7LcRB6jOePRJ0vmv+iGLe6xluw0draZDpfDH92BdEQ2tgYdWMYbgOzuULQNLG5ahUOBEyGeXOI3fevQIpCWQNzHH1ci9M5jL5Hj7pKJr5c4JU2phiuCnQfz5l7YWiUkm9bL13rNqb/CppRuoJvHDYZTON9QRikLh9ipOVmTlnTLE+/xYJabSNGxewBIbCnzsABjBB/ZyjLyicJGl9WzkrXdmcLtHEFpo0feHbNWpNpeVGEvNHJq0X230dzT3QveTUhRvylgvj1Re3N5fPpaFhI/Z9RYiXfdzToiWgRGlO5ZsAEeXvsRQKM35+mBOsYm6d/sftYAtC5EomU+eQGt7OI+hevjbi8XnbWuTwmK/KhNt1wf3rXX4a1SvDVKdzED9a4cTNrvk2jBWRg/w== sarah.bartlett28@gmail.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCaqFSs/HQLzkiAb5uHqjm9srq1KRUTgIDPRaNGp7bkbbAX/v9rHuhrVBarCNgtEcuILw0Ult7fLRGLe8BZOVEeOx9ATW6oBmGRdtr2tAJb7t7X3/bWrIck5iZcwyMfnfnkqO02JawDa2KgVTglVYQIvkTf+420vwBGvmequgr7i5Dv4vrPePjH/rwyhVvYVOmmwnV3gGnU4brEsv7iLyK4WB0Y8h7SkACGsJU9fs2Q0LwMMVmfOCO2fOMZGuVDmcGka/rMOhn98Wmp/bgejuDeqWx8HXaCc6viMw7Keoz0sQVpeIVxfIXni43hAiLvcSMfx1ACuyvr7zADRHUBO+rNiEj68aTLkoJdrDqym1xgknMGA55s3M7afazDGZeX5FIu4bsUAmZ1CJP1XLmcUdkDgapsqgHxjGoTcFyMGMBbvGiXE8Akv4JJ5qo79ABb3AWMxlIVCdnHERDpP0ZKTnf0W+R344Xj3lAs3eJ3VnhRQWv9XLAc2Hmu6oj6qZc2XFppe74EV+FzdjgssSn8VxHQxXF9gCCj21fremrJyE7y0j8WMVqEScrRlV0YTdUBHQBCfoNG0PSPhH2sluLqHMBKfMf1VxVM4dvpSdIGA7F1qUtRv5d74hlh5kMD9+MK+5C1dXw3sup8OoRNVepfZ3qsq/CxqvUrR5eWzIFeKhN8Tw== angusbass@hotmail.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5o2tqNas1ReESDb/8AAZ8Li2BlRUXYKHEScL5Zkfv/p9cKVR5Fkk91cuhVqiihDxJeqKwK3f9M1ZLsUl/bVZD6k+NoQvFL97OVt8NhCvGFyYH8CSS407ctIVnTdm+YpUO5ookW0dOwHGEspLMhpfPLMEzCu738tOZ8qRDnUd3HShA2eFkMW8Iz1QuGhHJ5gF4WFhM3qY6Oxq2VahlgEzV34q9Nv9FWMEOGYOkfj+gAaLtPIP5N11OexzsQX+j0hQjegWmD0EhDtQu5i42XK83g8pKAb1qbgLRQSg6SyylvkgDio6q14OWpTf6zEQrWnVwAIhKJuzxryqJJ62LuTLlqFVi3+7yvWVvpBuPwjoRWHhp+UES2acZxG7jHi5G0v4FXM+88yHl/MggUeB6DWkpuPgclPLbDrAMSoQhKcjjawVFzqojT2xzpFBp0FSN4RTrgiWa41xX3xep+HaIF0Ji/XIRgs4mqHvRTJnfFHtcERXggXEOE/3BKn7WAZJ0xdKTRNsDrjvN/I6+71FeLINx4mx35ooWVO6g1E8mKXZ7styiKdJAyUcAT6IzN0ilv/ni+kvGc/P/a3WYkAc6HBZXYjhtyD5n1PVwS9yoOgp68HAPw8ZSu2Ep7WUPh7K/1P6OtRkoJcbDUH7ubiXrvOg+MdwKn9tpv1qX/PMEBRHxzw== stephen.gray@arnoldclark.com
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNLoLsACIORL8g+mQA+x02ZMLwUkDaxcdx6ReQa/OPbLMwNFqcS345LpOPJN/LEq3bZAZ4K0xUemscwAQkDI6WYGro/y03lz052i0nlrC9Ee2V0yR4SVQYACibPoP3XfteT8DR407r43qnksf4625z5kkwZOaoZ6qWUSI4S0pqI7tCUAvgwTsn5ntuGUEhYFje/FV4hhgMTUoNzQSyCxKRUlUGY7I6ww5q5Qk4iUC6+4jYE5amMtBZFc5kF1wKMaiOfkuiZszJr6MAvmoQnhd14foZgoV4fgXEvNamV8rMXhIXEIGaEeebDpXY7LRiVNPtXMt+MDLatgXa+EmIPMGJjKW4W2PhJkaewulHTpvsGJfvYEpfEaBEjLUF7/CITeQFWAUlrV4wGlFVtautuvyBJ6v8zLzQSAJIaAPZOLy1ZB+saCkSnTkKTreshVS3K51VTGlUC2HiraEN+7/ZpBZFJ405/u/8p2LT3/KMwfvSlemRKD1nVIBU9+nUaI0ugytSrNgAVdF7eVaoQEskDw9RIiQ/JX70PGSdf5uJHi9R3xe/CGIhn4a14GLMp+Eacl71NyKoSD5EQWlBaM1RysRHpt4o3VtD4v9Nd8XT1dhxVzafWLtyQcf3dW6O5R0OO1YffEKwyuMfRs1FD2ObxKlzrpjKS3GJtZpso12tSNW8zQ== melissa.quek@arnolclark.com (acdo)
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD5y6eZerNURhaJY8b/IQylSvxIP4ioD6nMgxbHobc0DgNH6MYP6xFvpY32PAHLKBlG72ZbzGYoKsRj6mQ6C2kJxf+NKJcMG2/zcfaqOTjLIapXqS5kBUX4ByJzWwXBIxks5V6vvyUu16GRROKxCsTQBpktBgQnZF4/Fp358SCAi3eFnv8T0gQPBDw2mDMX9y77FBEdXygCTRVnH/lCJEdkgkvLeHIauiu5gMoTOGv0V6RvdWfhn8oN7ckBYyXm1QcUCd7Wntfdzi5Y+8IF3zTiXwUSYk0taCuv9lNrLCMt3rvq18L3hs1z9PAgC/FYIcuasvNbHCQdA8u6ndIspqsxVCiJ0zBrMVNHiKinA+zNpwU2OQuNug3D8wkWN5TzPcuRXjijO5yqUOkPlSO9DPp7JhdwYjA3UzvQOvfMtn6hYdmY1yf0OGlEHz+ymzA/hVb+0PLfNKqLGTDnz1Vs/LjwjJbZxRMJCa46DmhIXUGsmvRB3ejqkNTRZd3TLNondXSpCiKY8E/jvA8Ik/DShrLbXplsgJeKO0ZkPxLrJkZyy1w5LpMH1xpIAkmcAabEp+NNACQ5567+AJjIChAO8N83w3HGL8Q1cIdhuilj0DSBD6e/88S4VAAOCRSU9PzFAvkVSP/NhxE4oLBNlL1MeXraUJ5ypIDGQV0MXhdruyPMOQ== elisabeth.heed@arnoldclark.com
+all_rails_applications:
+  - { name: "acdotcom", path: "/", database_conf_name: "database.yml", application_keys_conf_name: "application_keys.yml", workers: 2, db_encoding: "latin1", job_workers: 2 }
+  - { name: "gearbox", path: "/", server: "gearbox", database_conf_name: "database.yml", db_encoding: "latin1" }
+  - { name: "gearbox_rental", path: "/", server: "gearbox_rental" }
+  - { name: "gearbox_assure", path: "/", server: "gearbox_assure" }
+  - { name: "images", path: "/", server: "images", database_conf_name: "database.yml", app_server: "puma", test_url: "/admin/api/Image", workers: 2 }
+  - { name: "autoparts", path: "/", server: "autoparts", application_keys_conf_name: "application_keys.yml" }
+  - { name: "roombooking", path: "/", server: "roombooking" }
+  # - { name: "blackbox", path: "/", server: "blackbox", app_server: "puma" }
+  # - { name: "iweb", path: "/", server: "iweb", app_server: "puma" }
+  - { name: "newsroom", path: "/newsroom", nginx_conf_name: "newsroom.app.conf.j2", app_server: "puma" }
+  - { name: "ace_news", server: "ace_news", path: "/newsroom", app_server: "puma", nginx_conf_name: "newsroom.app.conf.j2" }
+  - { name: "the_hub", server: "the_hub", path: "/newsroom", app_server: "puma", nginx_conf_name: "newsroom.app.conf.j2" }
+  - { name: "abyc", path: "/", app_server: "puma", server: "abyc" }
+  - { name: "video", path: "/", server: "video" }
+  - { name: "branch-manager", path: "/branch-manager", app_server: "puma", nginx_conf_name: "branch-manager.app.conf.j2" }
+  - { name: "fitspace", path: "/", server: "fitspace", app_server: "puma"}
+  - { name: "reservations", path: "/api/reservations", app_server: "puma" }
+  - { name: "fake_worldpay", path: "/", server: 'fake_worldpay', app_server: "puma" }
+  - { name: "pressr", path: "/", server: 'pressr', app_server: "puma" }
+  - { name: "payment-manager", path: "/payment-manager", database_conf_name: "database.yml", app_server: "puma" }
+  - { name: "feed-manager", path: "/", server: "feed-manager", app_server: "puma" }
+#  - { name: "ac-dashboard", path: "/dashboard", database_conf_name: "database.yml", app_server: "puma" }
+rails_nginx_server_blocks:
+  roombooking:
+    server_name_prefix: roombooking
+    server_name_suffix: arnoldclark.com
+  feed-manager:
+    server_name_prefix: feed-manager
+  the_hub:
+    server_name_prefix: "the-hub"
+  ace_news:
+    server_name_prefix: "ace-news"
+  gearbox:
+    port: 3001
+    nginx_conf_name: "gearbox.server.conf.j2"
+  gearbox_rental:
+    port: 8181
+    nginx_conf_name: "gearbox_rental.server.conf.j2"
+  gearbox_assure:
+    port: 8182
+    nginx_conf_name: "gearbox_assure.server.conf.j2"
+  images:
+    server_name_prefix: "images2"
+    nginx_conf_name: "images.server.conf.j2"
+  autoparts:
+    server_name_prefix: "autopartsuk"
+  intranet:
+    server_name_prefix: "intranet"
+    nginx_conf_name: "intranet.server.conf.j2"
+  blackbox:
+    server_name_prefix: "blackbox"
+  iweb:
+    server_name_prefix: "iweb-status"
+  video:
+    server_name_prefix: "video"
+    nginx_conf_name: video.server.conf.j2
+  abyc:
+    server_name_prefix: "abyc"
+  fitspace:
+    server_name_prefix: "fitspace"
+  fake_worldpay:
+    server_name_prefix: "fake_worldpay"
+  pressr:
+    server_name_prefix: "pressr"
+static_nginx_server_blocks:
+  harry_fairbairn:
+    nginx_conf_name: "harry_fairbairn.server.conf.j2"
+    server_name: "harryfairbairn.iweb.arnoldclark.com"
+  acdesign:
+    nginx_conf_name: "arnoldclark_design.server.conf.j2"
+    server_name: "acdesign.iweb.arnoldclark.com"
+  marketing_onboarding:
+    nginx_conf_name: "marketing_onboarding.server.conf.j2"
+    server_name: "marketing.iweb.arnoldclark.com"
+  midwestmotorfactors:
+    nginx_conf_name: "midwestmotorfactors.server.conf.j2"
+    server_name: "midwestmotorfactors.iweb.arnoldclark.com"
+static_applications:
+  - { name: "motorway_landing_page", path: "/sell-my-car/motorway" }
+additional_databases:
+  - { name: "webdb", read_only: yes }
+  - { name: "webdb_test", read_only: no }
+sudo_nopasswd: true
+sudo_users: ["root", "%wheel", "{{ app_account_username }}"]
+hosts_entries:
+  - "10.31.2.70 sagprxvip.arnoldclark.com"
+  - "10.31.2.70 dev.sales.arnoldclark.co.uk"
+  - "10.31.2.70 test.purchase.arnoldclark.co.uk"
+
+mariadb_bind_address: 0.0.0.0
+mariadb_port: 3306
+mariadb_max_connections: 400
+mariadb_query_cache_size: 256M
+mariadb_default_storage_engine: InnoDB
+mariadb_data_dir: /data/mysql
+mariadb_sock_file: /var/lib/mysql/mysql.sock
+galera_clustercheck_user: clustercheck
+galera_reset_cluster: false
+galera_selinux: true
+galera_firewalld: true
+galera_cluster_name: Galera_Cluster
+galera_sst_method: xtrabackup-v2
+galera_sst_user: sst_user
+galera_backup_user: backupuser
+galera_master_node: idb1.arnoldclark.com
+galera_cluster_nodes: "{{ groups['galera_cluster_nodes'] }}"
+galera_provider_options: 'gcache.size=2G;gmcast.segment=1'
+galera_retry_autocommit: 10
+galera_slave_threads: 32
+galera_xinet_port: 9200
+galera_node_address: "{{ ansible_default_ipv4.address }}"
+galera_clustercheck_hosts: "{{ groups['galera_cluster_nodes'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list }} + {{ ['localhost', '127.0.0.1'] }}"
+galera_systemd_start_timeout: 600
+
+redis_instances:
+  - { name: "cache", port: "6379", master_hostname: "idb1.arnoldclark.com", maxmemory_policy: "allkeys-lru" }
+  - { name: "queue", port: "6380", master_hostname: "idb2.arnoldclark.com", maxmemory_policy: "noeviction" }
+node_modules_to_install: []
+
+gems_as_services:
+  - name: mailcatcher
+    ports: ["8080/tcp", "{{ mailcatcher_smtp_port }}/tcp", "{{ mailcatcher_smtp_port }}/udp"]
+    pkill_pattern: "mailcatcher"
+metricbeat_config_template: metricbeat-localoutput.yml.j2
+metricbeat_module_config_templates: ["haproxy.yml"]

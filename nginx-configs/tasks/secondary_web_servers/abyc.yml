@@ -1,0 +1,20 @@
+- name: Install web server config files for abyc
+  template:
+    src: "server/secondary_web_servers/abyc.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/abyc.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for abyc
+  template:
+    src: "locations/secondary_web_servers/abyc.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/abyc.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for abyc
+  template:
+    src: "upstream/secondary_web_servers/abyc.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/abyc.upstream.conf"
+    owner: root
+    mode: 0644

@@ -1,0 +1,80 @@
+---
+
+- name: Set SELinux context for webapp files
+  sefcontext:
+    setype: etc_runtime_t
+    state: present
+    target: "/data/webapps(/.*)?"
+
+- name: Set SELinux context for log directory
+  sefcontext:
+    target: "{{ webapps_root }}/{{ item.name }}/shared/log(/.*)?"
+    setype: var_log_t
+    state: present
+  loop: "{{ rails_applications }}"
+
+- name: Apply SELinux context to log directory
+  command: "restorecon -R {{ webapps_root }}/{{ item.name }}/shared/log"
+  loop: "{{ rails_applications }}"
+
+- name: Check for existing SELinux module
+  shell: "semodule -l | grep unicorn_nginx"
+  failed_when: False
+  changed_when: False
+  register: selinux_present
+
+- name: Copy over SELinux policy
+  copy:
+    src: unicorn_nginx.te
+    dest: /tmp/unicorn_nginx.te
+    mode: 0777
+    owner: root
+    group: root
+  when: 
+    - not ansible_check_mode
+    - selinux_present.rc > 0
+
+- name: Check SELinux policy
+  command:  /usr/bin/checkmodule -M -m -o /tmp/unicorn_nginx.mod /tmp/unicorn_nginx.te
+  when: 
+    - not ansible_check_mode
+    - selinux_present.rc > 0
+
+- name: Build SELinux policy
+  command: /usr/bin/semodule_package -o /tmp/unicorn_nginx.pp -m /tmp/unicorn_nginx.mod
+  when: 
+    - not ansible_check_mode
+    - selinux_present.rc > 0
+
+- name: Apply SELinux policy
+  command: /usr/sbin/semodule -i /tmp/unicorn_nginx.pp
+  when: 
+    - not ansible_check_mode
+    - selinux_present.rc > 0
+
+- name: Cleanup SELinux policy
+  file:
+    path: /tmp/unicorn_nginx.te
+    state: absent
+  when: 
+    - not ansible_check_mode
+    - selinux_present.rc > 0
+
+- name: Set context on custom ports
+  seport:
+    ports: "{{ item.value.port }}"
+    proto: tcp
+    reload: yes
+    setype: http_port_t
+    state: present
+  with_dict: "{{ rails_nginx_server_blocks }}"
+  when: item.value.port is defined
+
+- name: Set context on status port
+  seport:
+    ports: "{{ nginx_status_port }}"
+    proto: tcp
+    reload: yes
+    setype: http_port_t
+    state: present
+  tags: ["nginx"]

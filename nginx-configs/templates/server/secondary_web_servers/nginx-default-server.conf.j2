@@ -1,0 +1,74 @@
+server{
+{% if nginx_default_server_plain %}
+  listen {{ nginx_default_server_port }};
+{% endif %}
+{% if nginx_default_server_tls %}
+  listen 443 ssl http2;
+  ssl_certificate /etc/pki/tls/certs/{{ nginx_default_server_cert|basename }};
+  ssl_certificate_key /etc/pki/tls/private/{{ nginx_default_server_cert_key|basename }};
+{% endif %}
+  server_name _;
+
+  client_body_timeout   10;
+  client_header_timeout 10;
+  keepalive_timeout     5 5;
+  send_timeout          10;
+
+  client_body_buffer_size     8k;
+  client_header_buffer_size   8k;
+  client_max_body_size        8k;
+  large_client_header_buffers 2 8k;
+
+{% if env == 'dev' %}
+  location /cdn {
+    return 301 https://www.arnoldclark.com$request_uri;
+  }
+{% endif %}
+
+{% if env == 'aws' %}
+  location /cdn {
+    root {{ webapps_root }};
+  }
+{% endif %}
+
+{# This is a hack to work around ABYC having paths on both abyc.arnoldclark.com AND arnoldclark.com. I don't like it either. -- Alexander #}
+{% if 'abyc' in (all_rails_applications | map(attribute='name') | list) %}
+  location /sell-my-car {
+    try_files $uri @abyc;
+    root /data/webapps/abyc/current/public;
+    client_max_body_size 20M;
+    client_body_buffer_size 20M;
+    location /sell-my-car/favicon {
+      expires 1w;
+      add_header Cache-Control "public";
+    }
+    location /sell-my-car/assets {
+      expires 1y;
+      add_header Cache-Control "public";
+    }
+    location /sell-my-car/robots.txt {
+      expires -1;
+    }
+  }
+
+  location @abyc {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_redirect off;
+    proxy_pass http://abyc;
+  }
+{% endif %}
+
+  root /usr/local/nginx/html;
+{% for item in all_rails_applications %}
+{% if item.server is not defined or item.server == "" or item.server == "_" %}
+  include /etc/nginx/conf.d/locations/{{ item.name }}.app.conf;
+{% endif %}
+{% endfor %}
+{% for item in static_applications %}
+  include /etc/nginx/conf.d/locations/{{ item.name }}.app.conf;
+{% endfor %}
+
+  error_page 500 502 503 504 /500.html;
+}

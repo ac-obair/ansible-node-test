@@ -1,0 +1,20 @@
+- name: Install web server config files for feed-manager
+  template:
+    src: "server/quaternary_web_servers/feed-manager.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/feed-manager.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for feed-manager
+  template:
+    src: "locations/quaternary_web_servers/feed-manager.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/feed-manager.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for feed-manager
+  template:
+    src: "upstream/quaternary_web_servers/feed-manager.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/feed-manager.upstream.conf"
+    owner: root
+    mode: 0644

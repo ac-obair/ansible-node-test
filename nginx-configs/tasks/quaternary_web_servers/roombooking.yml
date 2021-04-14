@@ -1,0 +1,20 @@
+- name: Install web server config files for roombooking
+  template:
+    src: "server/quaternary_web_servers/roombooking.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/roombooking.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for roombooking
+  template:
+    src: "locations/quaternary_web_servers/roombooking.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/roombooking.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for roombooking
+  template:
+    src: "upstream/quaternary_web_servers/roombooking.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/roombooking.upstream.conf"
+    owner: root
+    mode: 0644

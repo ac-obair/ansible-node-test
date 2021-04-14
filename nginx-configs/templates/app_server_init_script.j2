@@ -1,0 +1,132 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          {{ item.app_server|default('unicorn') }}-{{ item.name }}
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the {{ item.app_server|default('unicorn') }} app server
+# Description:       starts {{ item.app_server|default('unicorn') }} using start-stop-daemon
+### END INIT INFO
+
+set -e
+
+USAGE="Usage: $0 <start|stop|stopstart|rollrestart|workerrestart|reopenlogs>"
+
+# app settings
+USER={{ app_account_username }}
+WEBAPPS_ROOT={{ webapps_root }}
+WEB_ROOT=$WEBAPPS_ROOT/{{ item.name }}
+APP_NAME={{ item.name }}
+APP_ROOT="$WEB_ROOT/current"
+ENV={{ webapp_env_name }}
+PID=$WEB_ROOT/shared/tmp/pids/{{ item.app_server|default('unicorn') }}.pid
+PATH="/home/$USER/.rbenv/shims:/home/$USER/.rbenv/bin:$PATH"
+
+CMD="cd $APP_ROOT && \
+{{ item.name|upper + '_UNICORN_WORKERS=' + item.workers|string if item.workers is defined else '' }} \
+WEB_ROOT=$WEB_ROOT \
+RAILS_ENV=$ENV \
+PID=$PID \
+{% if item.app_server is defined and item.app_server == 'puma' %}
+bundle exec puma --tag {{ item.name }} -C $APP_ROOT/config/puma_production.rb"
+PGREP_PATTERN="puma [0-9\.]{5}.*\[{{ item.name }}\]"
+{% else %}
+bundle exec unicorn -c $APP_ROOT/config/unicorn.rb -E $ENV -D"
+PGREP_PATTERN="unicorn master -c $WEB_ROOT/"
+{% endif %}
+
+# make sure the app exists
+cd $APP_ROOT || exit 1
+
+sig () {
+  if remove_pid_if_stale; then
+    echo "PID was stale"
+    return 1
+  else
+    test -s "$PID" && kill -$1 `cat $PID`
+  fi
+}
+
+remove_pid_if_stale () {
+  if [[ -s "$PID" ]]; then
+    pwdx `cat $PID` 2>&1 | grep "$WEB_ROOT" > /dev/null && return 1 # Return with false if PID is healthy
+    rm $PID
+    return 0 # Return with non-false if PID is stale
+  fi
+  return 1 # Return with false if PID is healthy
+}
+
+launch () {
+  if [[ `whoami` = "$USER" ]]; then
+    /usr/bin/sh -c "$CMD"
+  else
+    /bin/su - "$USER" -c "$CMD"
+  fi
+}
+
+wait_for_all_processes_to_exit () {
+  while pgrep -f "$PGREP_PATTERN" > /dev/null; do
+    printf '.'
+    sleep 1
+  done
+  echo
+  return 0
+}
+
+case $1 in
+  start)
+    sig 0 && echo >&2 "Already running" && exit 0
+    echo "Starting $APP_NAME"
+    launch
+    ;;
+  stop)
+    echo "Stopping $APP_NAME"
+    sig QUIT && wait_for_all_processes_to_exit && exit 0
+    echo >&2 "Not running"
+    ;;
+  stopstart)
+    echo "Stopping and restarting $APP_NAME"
+{% if item.app_server is defined and item.app_server == 'puma' %}
+    sig INT && wait_for_all_processes_to_exit && launch && exit 0
+{% else %}
+    sig QUIT && wait_for_all_processes_to_exit && launch && exit 0
+{% endif %}
+    wait_for_all_processes_to_exit && launch && exit 0
+    echo >&2 "Failed to restart"
+    ;;
+  workerrestart)
+{% if item.app_server is defined and item.app_server == 'puma' %}
+    sig USR2 && echo "Restarting workers for $APP_NAME" && exit 0
+{% else %}
+    sig HUP && echo "Restarting workers for $APP_NAME" && exit 0
+{% endif %}
+    echo "Application not running, launching $APP_NAME..." && launch && exit 0
+    echo >&2 "Failed to reload"
+    ;;
+  rollrestart)
+{% if item.app_server is defined and item.app_server == 'puma' %}
+    sig USR1 && echo "Restarting workers for $APP_NAME" && exit 0
+{% else %}
+    sig USR2 && echo "Roll-restarting $APP_NAME" && exit 0
+{% endif %}
+    echo "Application not running, launching $APP_NAME..." && launch && exit 0
+    echo >&2 "Couldn't roll-restart, try and stopstart or workerrestart instead" && exit 1
+    ;;
+  reopenlogs)
+{% if item.app_server is defined and item.app_server == 'puma' %}
+    sig HUP && echo rotated logs OK && exit 0
+{% else %}
+    sig USR1 && echo rotated logs OK && exit 0
+{% endif %}
+    echo >&2 "Couldn't reopen logs" && exit 1
+    ;;
+  killpid)
+    rm -f $PID && echo "PID cleared"
+    ;;
+  *)
+    echo >&2 $USAGE
+    exit 1
+    ;;
+esac

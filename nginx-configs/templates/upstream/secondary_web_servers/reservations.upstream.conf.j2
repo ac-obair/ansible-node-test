@@ -1,0 +1,3 @@
+upstream reservations {
+    server unix:/data/webapps/reservations/shared/tmp/sockets/puma.sock fail_timeout=0;
+}

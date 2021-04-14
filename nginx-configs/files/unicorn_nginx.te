@@ -1,0 +1,31 @@
+
+module unicorn_nginx 1.0;
+
+require {
+    type default_t;
+    type unconfined_t;
+    type fs_t;
+    type httpd_t;
+    type initrc_t;
+    type etc_runtime_t;
+    type intermapper_port_t;
+    class sock_file { write relabelto create unlink getattr };
+    class dir { write rmdir remove_name relabelfrom relabelto add_name };
+    class filesystem associate;
+    class unix_stream_socket connectto;
+    class lnk_file { read };
+    class file { read open getattr };
+    class tcp_socket name_bind;
+}
+
+#============= httpd_t ==============
+allow httpd_t etc_runtime_t:sock_file write;
+allow httpd_t default_t:file open;
+allow httpd_t default_t:file read;
+allow httpd_t default_t:file getattr;
+allow httpd_t default_t:lnk_file read;
+allow httpd_t default_t:sock_file write;
+allow httpd_t self:sock_file write;
+allow httpd_t initrc_t:unix_stream_socket connectto;
+allow httpd_t unconfined_t:unix_stream_socket connectto;
+allow httpd_t intermapper_port_t:tcp_socket name_bind;

@@ -1,0 +1,14 @@
+[Unit]
+Description=starts the unicorn app server for {{ item.name }}
+After=mysqld.service mariadb.service
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/{{ item.app_server|default('unicorn') }}-{{ item.name }} start
+ExecStop=/etc/init.d/{{ item.app_server|default('unicorn') }}-{{ item.name }} stop
+ExecReload=/etc/init.d/{{ item.app_server|default('unicorn') }}-{{ item.name }} rollrestart
+RemainAfterExit=yes
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

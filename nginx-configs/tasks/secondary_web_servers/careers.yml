@@ -1,0 +1,13 @@
+- name: Install web app config files for careers
+  template:
+    src: "locations/secondary_web_servers/careers.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/careers.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for careers
+  template:
+    src: "upstream/secondary_web_servers/careers.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/careers.upstream.conf"
+    owner: root
+    mode: 0644

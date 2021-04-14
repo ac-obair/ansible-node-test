@@ -1,0 +1,13 @@
+- name: Install web app config files for branch-manager
+  template:
+    src: "locations/secondary_web_servers/branch-manager.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/branch-manager.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for branch-manager
+  template:
+    src: "upstream/secondary_web_servers/branch-manager.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/branch-manager.upstream.conf"
+    owner: root
+    mode: 0644

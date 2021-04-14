@@ -1,0 +1,3 @@
+all_rails_applications:
+  - { name: "autopilot", path: "/", app_server: "puma" }
+nginx_server_blocks: {}

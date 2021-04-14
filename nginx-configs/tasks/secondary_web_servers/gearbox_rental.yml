@@ -1,0 +1,20 @@
+- name: Install web server config files for gearbox_rental
+  template:
+    src: "server/secondary_web_servers/gearbox_rental.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/gearbox_rental.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for gearbox_rental
+  template:
+    src: "locations/secondary_web_servers/gearbox_rental.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/gearbox_rental.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for gearbox_rental
+  template:
+    src: "upstream/secondary_web_servers/gearbox_rental.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/gearbox_rental.upstream.conf"
+    owner: root
+    mode: 0644

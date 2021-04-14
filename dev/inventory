@@ -1,0 +1,12 @@
+[all:vars]
+env=dev
+
+[web_servers]
+iweb1.arnoldclark.com
+iweb2.arnoldclark.com
+iweb3.arnoldclark.com
+iweb4.arnoldclark.com
+iweb5.arnoldclark.com
+iweb6.arnoldclark.com
+iweb7.arnoldclark.com
+iweb8.arnoldclark.com

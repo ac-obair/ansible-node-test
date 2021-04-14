@@ -1,0 +1,46 @@
+GOCD_USER: go
+GOCD_HOME_DIR: "/home/{{ GOCD_USER }}"
+GOCD_INSTALL_SERVER: false
+app_account_username: "{{ GOCD_USER }}"
+webapps_root: "{{ GOCD_HOME_DIR }}"
+all_rails_applications:
+  - { name: "acdotcom", path: "/", application_keys_conf_name: "application_keys.yml", database_conf_name: "database.yml" }
+  - { name: "gearbox", path: "/gearbox", database_conf_name: "database.yml" }
+  - { name: "images", path: "/images", database_conf_name: "database.yml" }
+  - { name: "reservations", database_conf_name: "database.yml" }
+  - { name: "autoparts", path: "/", application_keys_conf_name: "application_keys.yml" }
+  - { name: "thinkcustomerhub", path: "/", application_keys_conf_name: "application_keys.yml" }
+  - { name: "thinkcustomerhubapi", path: "/", application_keys_conf_name: "application_keys.yml" }
+  - { name: "our_branches", path: "/" }
+  - { name: "blackbox", path: "/" }
+  - { name: "iweb", path: "/" }
+  - { name: "newsroom", path: "/" }
+  - { name: "ace_news", path: "/" }
+additional_databases:
+  - { name: "webdb", read_only: yes }
+  - { name: "webdb_test", read_only: no }
+rails_config_file_prefix: gocd-
+rails_config_files: ["secrets.yml"]
+rails_target_config_dir: config
+rails_db_login_host: 127.0.0.1
+rbenv_target_user: "{{ GOCD_USER }}"
+db_backup_owner: "{{ GOCD_USER }}"
+db_login_host: 127.0.0.1
+db_login_username: root
+webdbrestore_use_implicit_login: false
+
+mysql_user_home: /root
+mysql_bind_address: '127.0.0.1'
+mysql_datadir: /data/mysql
+mysql_packages:
+  - mariadb
+  - mariadb-server
+  - mariadb-libs
+  - MySQL-python
+  - perl-DBD-MySQL
+mysql_daemon: mysql
+mysql_log_dir: /var/log/mariadb
+mysql_log_error: "{{ mysql_log_dir}}/mariadb.log"
+mysql_syslog_tag: mariadb
+mysql_pid_dir: /var/run/maridb
+mysql_pid_file: "/var/run/mariadb/mariadb.pid"

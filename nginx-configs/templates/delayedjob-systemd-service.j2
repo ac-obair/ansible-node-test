@@ -1,0 +1,22 @@
+[Unit]
+Description=delayed_job_{{ item.name }}
+After=nginx.service
+
+[Service]
+Type=forking
+User={{ app_account_username }}
+Environment=RAILS_ENV={{ webapp_env_name }}
+EnvironmentFile=/etc/environment
+WorkingDirectory={{ webapps_root }}/{{ item.name }}/current
+{% if item.job_workers|default(1) > 1 %}
+ExecStart=/bin/sh -c "/home/{{ app_account_username }}/.rbenv/shims/ruby {{ webapps_root }}/{{ item.name }}/current/bin/delayed_job -n {{ item.job_workers }} start"
+{% else %}
+ExecStart=/bin/sh -c "/home/{{ app_account_username }}/.rbenv/shims/ruby {{ webapps_root }}/{{ item.name }}/current/bin/delayed_job start"
+{% endif %}
+ExecStop=/bin/sh -c "/home/{{ app_account_username }}/.rbenv/shims/ruby {{ webapps_root }}/{{ item.name }}/current/bin/delayed_job stop"
+ExecReload=/bin/sh -c "/home/{{ app_account_username }}/.rbenv/shims/ruby {{ webapps_root }}/{{ item.name }}/current/bin/delayed_job restart"
+TimeoutSec=120
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+- name: Install web server config files for video
+  template:
+    src: "server/secondary_web_servers/video.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/video.server.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app config files for video
+  template:
+    src: "locations/secondary_web_servers/video.app.conf.j2"
+    dest: "/etc/nginx/conf.d/locations/video.app.conf"
+    owner: root
+    mode: 0644
+
+- name: Install web app upstream files for video
+  template:
+    src: "upstream/secondary_web_servers/video.upstream.conf.j2"
+    dest: "/etc/nginx/conf.d/upstreams/video.upstream.conf"
+    owner: root
+    mode: 0644

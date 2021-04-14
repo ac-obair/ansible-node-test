@@ -1,0 +1,18 @@
+server {
+  listen 80;
+  server_name www.harryfairbairn.co.uk;
+
+  root         /data/webapps/harry_fairbairn/current;
+  try_files index.html index.htm $uri/index.html $uri;
+
+  location / {
+  }
+
+  error_page 404 /404.html;
+      location = /40x.html {
+  }
+
+  error_page 500 502 503 504 /50x.html;
+      location = /50x.html {
+  }
+}

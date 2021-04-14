@@ -1,0 +1,6 @@
+- name: Install web server config files for midwestmotorfactors
+  template:
+    src: "server/secondary_web_servers/midwestmotorfactors.server.conf.j2"
+    dest: "/etc/nginx/conf.d/servers/midwestmotorfactors.server.conf"
+    owner: root
+    mode: 0644
