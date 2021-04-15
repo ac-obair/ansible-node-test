@@ -1,13 +1,13 @@
 ---
 
 - name: Set SELinux context for webapp files
-  sefcontext:
+  community.general.sefcontext:
     setype: etc_runtime_t
     state: present
     target: "/data/webapps(/.*)?"
 
 - name: Set SELinux context for log directory
-  sefcontext:
+  community.general.sefcontext:
     target: "{{ webapps_root }}/{{ item.name }}/shared/log(/.*)?"
     setype: var_log_t
     state: present
