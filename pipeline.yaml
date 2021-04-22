@@ -17,9 +17,8 @@ pool:
   vmImage: "ubuntu-18.04"
 
 stages:
-  - stage: "ansible_runtime"
-    displayName: "ansible runtime provisioning"
-
+  - stage: "ansible_test"
+    displayName: "ansible runtime testing"
     jobs:
       - job: "test"
         displayName: "ansible-test"
@@ -31,6 +30,9 @@ stages:
               script: |
                 echo "hello, world! from molecule test"
 
+  - stage: "ansible_check"
+    displayName: "ansible runtime checking"
+    jobs:
       - job: "check"
         displayName: "ansible-check"
         steps:
@@ -40,7 +42,10 @@ stages:
               targetType: "inline"
               script: |
                 echo "hello, world! from ansible-check"
- 
+
+   - stage: "ansible_runtime"
+    displayName: "ansible runtime provisioning"
+    jobs:
       - job: "deploy"
         displayName: "ansible-playbook"
         steps:
