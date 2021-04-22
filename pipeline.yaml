@@ -20,12 +20,22 @@ stages:
   - stage: "ansible_runtime"
     displayName: "ansible runtime provisioning"
     jobs:
-      - job: "ansible_playbook"
+      - job: "test"
+        displayName: "molecule test from ansible-tets"
+        steps:
+          - task: Bash@3
+            displayName: "molecule test"
+            inputs:
+              targetType: "inline"
+              script: |
+                echo "hello, world! from molecule test"
+      - job: "deploy"
         displayName: "ansible-playbook"
         steps:
           - task: Bash@3
-            displayName: "Test bash@3 echo"
+            displayName: "ansible-playbook"
             inputs:
+              targetType: "inline"
               script: |
-                echo "hello, world!"
+                echo "hello, world! from ansible-playbook"
 
