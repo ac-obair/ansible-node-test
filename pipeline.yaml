@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - "*"
+pr:
+  branches:
+    include: 
+      - main
+  paths:
+    include:
+      - "*"
+
+pool:
+  vmImage: "ubuntu-18.04"
+
+stages:
+  - stage: "ansible runtime"
+    displayName: "ansible runtime"
+    jobs:
+      - job: "ansible-playbook"
+        displayName: "ansible-playbook"
+        steps:
+          - task: Bash@3
+            displayName: "Test bash@3 echo"
+            inputs:
+              script: |
+                echo "hello, world!"
+
