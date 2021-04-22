@@ -19,9 +19,10 @@ pool:
 stages:
   - stage: "ansible_runtime"
     displayName: "ansible runtime provisioning"
+
     jobs:
       - job: "test"
-        displayName: "molecule test from ansible-tets"
+        displayName: "ansible-test"
         steps:
           - task: Bash@3
             displayName: "molecule test"
@@ -29,6 +30,18 @@ stages:
               targetType: "inline"
               script: |
                 echo "hello, world! from molecule test"
+
+       - job: "check"
+        displayName: "ansible-check"
+        steps:
+          - task: Bash@3
+            displayName: "ansible-playbook"
+            inputs:
+              targetType: "inline"
+              script: |
+                echo "hello, world! from ansible-check"
+ 
+
       - job: "deploy"
         displayName: "ansible-playbook"
         steps:
