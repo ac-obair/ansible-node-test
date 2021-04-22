@@ -43,7 +43,7 @@ stages:
               script: |
                 echo "hello, world! from ansible-check"
 
-   - stage: "ansible_runtime"
+  - stage: "ansible_runtime"
     displayName: "ansible runtime provisioning"
     jobs:
       - job: "deploy"
@@ -55,4 +55,3 @@ stages:
               targetType: "inline"
               script: |
                 echo "hello, world! from ansible-playbook"
-
