@@ -17,10 +17,10 @@ pool:
   vmImage: "ubuntu-18.04"
 
 stages:
-  - stage: "ansible runtime"
-    displayName: "ansible runtime"
+  - stage: "ansible_runtime"
+    displayName: "ansible runtime provisioning"
     jobs:
-      - job: "ansible-playbook"
+      - job: "ansible_playbook"
         displayName: "ansible-playbook"
         steps:
           - task: Bash@3
