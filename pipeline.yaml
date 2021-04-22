@@ -31,7 +31,7 @@ stages:
               script: |
                 echo "hello, world! from molecule test"
 
-       - job: "check"
+      - job: "check"
         displayName: "ansible-check"
         steps:
           - task: Bash@3
@@ -41,7 +41,6 @@ stages:
               script: |
                 echo "hello, world! from ansible-check"
  
-
       - job: "deploy"
         displayName: "ansible-playbook"
         steps:
