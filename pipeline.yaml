@@ -37,7 +37,7 @@ stages:
         displayName: "ansible-check"
         steps:
           - task: Bash@3
-            displayName: "ansible-playbook"
+            displayName: "ansible-check"
             inputs:
               targetType: "inline"
               script: |
