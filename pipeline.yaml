@@ -41,21 +41,19 @@ stages:
             displayName: "check host"
           - bash: "ls && pwd"
             displayName: "check pwd"
-
+              
           - task: Ansible@0
-            displayName: "ansible-check"
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
-              playbookSourceRemoteMachine: "ansibleMachine"
-              playbookPathAnsibleMachineOnRemoteMachine: "nginx-configs.yaml"
+              playbookSourceRemoteMachine: "agentMachine"
+              playbookPathOnAgentMachine: "ansible-node-test"
+              playbookRootRemoteMachine: "ansible-node-test"
+              playbookPathLinkedArtifactOnRemoteMachine: "nginx-configs.yaml"
               inventoriesRemoteMachine: "file"
-              inventoryFileSourceRemoteMachine: "ansibleMachine"
-              inventoryFileAnsibleMachineOnRemoteMachine: "dev/inventory"
-              args: |
-                -CD
-                --tags gearbox
-                --limit iweb2.arnoldclark.com
+              inventoryFileSourceRemoteMachine: "agentMachine"
+              inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
+              args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
               
   - stage: "ansible_runtime"
     displayName: "ansible runtime provisioning"
