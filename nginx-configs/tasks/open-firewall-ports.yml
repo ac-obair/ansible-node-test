@@ -1,7 +1,7 @@
 ---
 
 - name: Enable HTTP and HTTPS
-  firewalld:
+  ansible.posix.firewalld:
     service: "{{ item }}"
     state: enabled
     permanent: yes
@@ -9,7 +9,7 @@
   with_items: ["http", "https"]
 
 - name: Enable app ports
-  firewalld:
+  ansible.posix.firewalld:
     port: "{{ item.value.port }}/tcp"
     state: enabled
     permanent: yes
