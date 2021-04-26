@@ -37,10 +37,13 @@ stages:
         pool: "Azure Self-Hosted"
         displayName: "ansible-check"
         steps:
-          - bash: "hostname is $(hostname) && ls"
-            displayName: "ansible-check"
+          - bash: "hostname"
+            displayName: "check host"
+          - bash: "ls && pwd"
+            displayName: "check pwd"
 
           - task: Ansible@0
+            displayName: "ansible-check"
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
