@@ -34,7 +34,7 @@ stages:
     displayName: "ansible runtime checking"
     jobs:
       - job: "check"
-        pool: 'Azure Self-Hosted'
+        pool: "Azure Self-Hosted"
         displayName: "ansible-check"
         steps:
           - bash: |
@@ -47,13 +47,13 @@ stages:
                 echo "hello, world! from ansible-check"
           - task: Ansible@0
             inputs:
-              ansibleInterface: 'remoteMachine'
-              connectionOverSsh: 'rdp03-ansible-agent-ssh-service-connection'
-              playbookSourceRemoteMachine: 'ansibleMachine'
-              playbookPathAnsibleMachineOnRemoteMachine: '$(System.DefaultWorkingDirectory)/ansible-node-test/nginx-configs.yaml'
-              inventoriesRemoteMachine: 'file'
-              inventoryFileSourceRemoteMachine: 'ansibleMachine'
-              inventoryFileAnsibleMachineOnRemoteMachine: 'dev/inventory'
+              ansibleInterface: "remoteMachine"
+              connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
+              playbookSourceRemoteMachine: "ansibleMachine"
+              playbookPathAnsibleMachineOnRemoteMachine: "nginx-configs.yaml"
+              inventoriesRemoteMachine: "file"
+              inventoryFileSourceRemoteMachine: "ansibleMachine"
+              inventoryFileAnsibleMachineOnRemoteMachine: "dev/inventory"
               args: |
                 -CD
                 --tags gearbox
@@ -63,7 +63,7 @@ stages:
     displayName: "ansible runtime provisioning"
     jobs:
       - job: "deploy"
-        pool: 'Azure Self-Hosted'
+        pool: "Azure Self-Hosted"
         displayName: "ansible-playbook"
         steps:
           - task: Bash@3
