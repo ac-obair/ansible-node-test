@@ -47,7 +47,7 @@ stages:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
               playbookSourceRemoteMachine: "agentMachine"
-              playbookPathOnAgentMachine: "ansible-node-test"
+              playbookPathOnAgentMachine: "$(System.DefaultWorkingDirectory)"
               playbookRootRemoteMachine: "ansible-node-test"
               playbookPathLinkedArtifactOnRemoteMachine: "nginx-configs.yaml"
               inventoriesRemoteMachine: "file"
