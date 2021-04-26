@@ -37,14 +37,9 @@ stages:
         pool: "Azure Self-Hosted"
         displayName: "ansible-check"
         steps:
-          - bash: |
-              echo "using - bash: yaml key for testing"
-          - task: Bash@3
+          - bash: "hostname is $(hostname) && ls"
             displayName: "ansible-check"
-            inputs:
-              targetType: "inline"
-              script: |
-                echo "hello, world! from ansible-check"
+
           - task: Ansible@0
             inputs:
               ansibleInterface: "remoteMachine"
