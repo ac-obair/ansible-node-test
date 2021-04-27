@@ -41,6 +41,7 @@ stages:
             displayName: "ansible-playbook -CD"
             env:
               ANSIBLE_FORCE_COLOR: true
+              ANSIBLE_NOCOLOR: false
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
