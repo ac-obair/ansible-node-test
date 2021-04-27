@@ -30,7 +30,7 @@ stages:
               script: |
                 echo "hello, world! from molecule test"
 
-  - stage: "ansible runtime provisioning"
+  - stage: "ansible runtime checking"
     displayName: "check-mode (dry-run)"
     jobs:
       - job: "checking"
