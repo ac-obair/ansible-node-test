@@ -42,7 +42,7 @@ stages:
           - bash: "ls && pwd"
             displayName: "check pwd"
               
-          - ansible:
+          - task: Ansible@0
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
@@ -57,6 +57,7 @@ stages:
   - stage: "ansible_runtime"
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     displayName: "ansible runtime provisioning"
+
     jobs:
       - job: "deploy"
         pool: "Azure Self-Hosted"
