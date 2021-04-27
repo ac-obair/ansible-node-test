@@ -49,6 +49,8 @@ stages:
               inventoryFileSourceRemoteMachine: "agentMachine"
               inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
+            env:
+              ANSIBLE_FORCE_COLOR=true
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
