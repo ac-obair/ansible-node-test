@@ -78,7 +78,7 @@ stages:
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
-    condition: and(succeeded(), eq(variables["build.sourceBranch"], "refs/heads/master"))
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
       - job: "deploying"
         displayName: "playbook rollout"
