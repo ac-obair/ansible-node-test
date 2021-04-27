@@ -49,7 +49,7 @@ stages:
               inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
 
-  - stage: "ansible runtime provisioning"
+  - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
