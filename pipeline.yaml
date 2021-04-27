@@ -31,10 +31,10 @@ stages:
                 echo "hello, world! from molecule test"
 
   - stage: "ansible_runtime_checking"
-    displayName: "check_mode_dry_run"
+    displayName: "check_mode"
     jobs:
       - job: "checking"
-        displayName: "ansible_playbook_check"
+        displayName: "playbook dry-run"
         pool: "Azure Self-Hosted"
         steps:
           - task: Ansible@0
@@ -54,7 +54,7 @@ stages:
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
       - job: "deploying"
-        displayName: "ansible_playbook"
+        displayName: "playbook rollout"
         pool: "Azure Self-Hosted"
         steps:
           - task: Bash@3
