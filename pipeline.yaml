@@ -18,7 +18,7 @@ pool:
 
 stages:
   - stage: "ansible runtime testing"
-    displayName: "static-analysis"
+    displayName: "static_analysis"
     jobs:
       - job: "linting"
         displayName: "lint and syntax check"
@@ -31,7 +31,7 @@ stages:
                 echo "hello, world! from molecule test"
 
   - stage: "ansible runtime checking"
-    displayName: "check-mode dry-run"
+    displayName: "check_mode dry_run"
     jobs:
       - job: "checking"
         displayName: "ansible-playbook --check"
@@ -54,7 +54,7 @@ stages:
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
       - job: "deploying"
-        displayName: "ansible-playbook"
+        displayName: "ansible_playbook"
         pool: "Azure Self-Hosted"
         steps:
           - task: Bash@3
