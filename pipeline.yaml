@@ -17,6 +17,28 @@ pool:
   vmImage: "ubuntu-18.04"
 
 stages:
+  - stage: "ansible_runtime_environ"
+    displayName: "prepare_environ"
+    jobs:
+      - job: "dependencies"
+        displayName: "installing dependencies"
+        steps:
+          - task: CopyFilesOverSSH@0
+            displayName: "copy requirements file"
+            inputs:
+              sshEndpoint: 'rdp03-ansible-agent-ssh-service-connection'
+              contents: 'requirements.txt'
+              targetFolder: '$HOME'
+              readyTimeout: '20000'
+              failOnEmptySource: true
+          - task: SSH@0
+            displayName: "pip install"
+            inputs:
+              sshEndpoint: 'rdp03-ansible-agent-ssh-service-connection'
+              runOptions: 'commands'
+              commands: 'pip install -r $HOME/requirements.txt'
+              readyTimeout: '20000'
+
   - stage: "ansible_runtime_testing"
     displayName: "static_analysis"
     jobs:
