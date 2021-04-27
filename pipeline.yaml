@@ -26,18 +26,18 @@ stages:
           - task: CopyFilesOverSSH@0
             displayName: "copy requirements file"
             inputs:
-              sshEndpoint: 'rdp03-ansible-agent-ssh-service-connection'
-              contents: 'requirements.txt'
-              targetFolder: '$HOME'
-              readyTimeout: '20000'
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              contents: "requirements.txt"
+              targetFolder: "$HOME"
+              readyTimeout: "20000"
               failOnEmptySource: true
           - task: SSH@0
             displayName: "pip install"
             inputs:
-              sshEndpoint: 'rdp03-ansible-agent-ssh-service-connection'
-              runOptions: 'commands'
-              commands: 'pip install -r $HOME/requirements.txt'
-              readyTimeout: '20000'
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "commands"
+              commands: "pip install -r $HOME/requirements.txt"
+              readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
     displayName: "static_analysis"
@@ -77,7 +77,7 @@ stages:
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq(variables["build.sourceBranch"], "refs/heads/master"))
     jobs:
       - job: "deploying"
         displayName: "playbook rollout"
