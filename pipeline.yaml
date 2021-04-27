@@ -34,7 +34,7 @@ stages:
     displayName: "check_mode dry_run"
     jobs:
       - job: "checking"
-        displayName: "ansible-playbook --check"
+        displayName: "ansible_playbook check"
         pool: "Azure Self-Hosted"
         steps:
           - task: Ansible@0
@@ -58,7 +58,7 @@ stages:
         pool: "Azure Self-Hosted"
         steps:
           - task: Bash@3
-            displayName: "ansible-playbook"
+            displayName: "ansible_playbook"
             inputs:
               targetType: "inline"
               script: |
