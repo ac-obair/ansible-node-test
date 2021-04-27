@@ -29,7 +29,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               contents: "requirements.txt"
-              targetFolder: "$HOME"
+              targetFolder: "created_by_azure_pipeline"
               readyTimeout: "20000"
               failOnEmptySource: true
           - task: SSH@0
@@ -37,7 +37,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "pip install -r $HOME/requirements.txt"
+              commands: "pip install -r created_by_azure_pipeline/requirements.txt"
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
