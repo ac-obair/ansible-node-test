@@ -31,7 +31,7 @@ stages:
                 echo "hello, world! from molecule test"
 
   - stage: "ansible runtime checking"
-    displayName: "check-mode (dry-run)"
+    displayName: "check-mode dry-run"
     jobs:
       - job: "checking"
         displayName: "ansible-playbook --check"
