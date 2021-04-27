@@ -42,7 +42,7 @@ stages:
           - bash: "ls && pwd"
             displayName: "check pwd"
               
-          - task: Ansible@0
+          - ansible:
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
@@ -55,6 +55,7 @@ stages:
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
               
   - stage: "ansible_runtime"
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     displayName: "ansible runtime provisioning"
     jobs:
       - job: "deploy"
