@@ -17,31 +17,26 @@ pool:
   vmImage: "ubuntu-18.04"
 
 stages:
-  - stage: "ansible_test"
-    displayName: "ansible runtime testing"
+  - stage: "ansible runtime testing"
+    displayName: "static-analysis"
     jobs:
-      - job: "test"
-        displayName: "ansible-test"
+      - job: "linting"
+        displayName: "lint and syntax check"
         steps:
           - task: Bash@3
-            displayName: "molecule test"
+            displayName: "molecule"
             inputs:
               targetType: "inline"
               script: |
                 echo "hello, world! from molecule test"
 
-  - stage: "ansible_check"
-    displayName: "ansible runtime checking"
+  - stage: "ansible runtime provisioning"
+    displayName: "check-mode (dry-run)"
     jobs:
-      - job: "check"
+      - job: "checking"
+        displayName: "ansible-playbook --check"
         pool: "Azure Self-Hosted"
-        displayName: "ansible-check"
         steps:
-          - bash: "hostname"
-            displayName: "check host"
-          - bash: "ls && pwd"
-            displayName: "check pwd"
-              
           - task: Ansible@0
             inputs:
               ansibleInterface: "remoteMachine"
@@ -53,15 +48,14 @@ stages:
               inventoryFileSourceRemoteMachine: "agentMachine"
               inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
-              
-  - stage: "ansible_runtime"
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-    displayName: "ansible runtime provisioning"
 
+  - stage: "ansible runtime provisioning"
+    displayName: "applying changes"
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
-      - job: "deploy"
-        pool: "Azure Self-Hosted"
+      - job: "deploying"
         displayName: "ansible-playbook"
+        pool: "Azure Self-Hosted"
         steps:
           - task: Bash@3
             displayName: "ansible-playbook"
