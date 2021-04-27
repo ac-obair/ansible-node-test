@@ -38,6 +38,7 @@ stages:
         pool: "Azure Self-Hosted"
         steps:
           - task: Ansible@0
+            displayName: "ansible-playbook -CD"
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
@@ -58,7 +59,7 @@ stages:
         pool: "Azure Self-Hosted"
         steps:
           - task: Bash@3
-            displayName: "ansible_playbook"
+            displayName: "ansible-playbook"
             inputs:
               targetType: "inline"
               script: |
