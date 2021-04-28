@@ -28,7 +28,7 @@ stages:
             displayName: "copy requirements file"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              contents: "requirements.txt \n test.yaml"
+              contents: "**"
               targetFolder: "azure_pipelines/ansible-node-test"
               readyTimeout: "20000"
               failOnEmptySource: true
@@ -59,7 +59,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "ANSIBLE_NOCOLOR=0 ansible-playbook --syntax-check azure_pipelines/ansible-node-test/test.yaml"
+              commands: "ansible-playbook --syntax-check azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
           - task: SSH@0
             displayName: "linter"
