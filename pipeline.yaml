@@ -42,7 +42,8 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                pyenv virtualenv $(pipeline)
+                pyenv virtualenvs --bare | grep $(pipeline) && pyenv virtualenv-delete -f $(pipeline)
+                pyenv virtualenv -f $(pipeline)
                 cd azure_pipelines/$(pipeline)
                 pyenv local $(pipeline)
               readyTimeout: "20000"
@@ -55,19 +56,6 @@ stages:
                 cd azure_pipelines/$(pipeline)
                 pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
               readyTimeout: "20000"
-      - job: "cleanup"
-        displayName: "remove virtualenv on failure"
-        condition: failed()
-        dependsOn: dependencies
-        pool: "Azure Self-Hosted"
-        steps:
-          - task: SSH@0
-            displayName: "remove virtual environment"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                pyenv virtualenv-delete -f $(pipeline)
                 
   - stage: "ansible_runtime_testing"
     displayName: "static_analysis"
@@ -139,4 +127,4 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                pyenv virtualenv-delete $(pipeline) -f
+                pyenv virtualenv-delete -f $(pipeline)
