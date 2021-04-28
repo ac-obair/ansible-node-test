@@ -56,7 +56,7 @@ stages:
                 pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
               readyTimeout: "20000"
       - job: "cleanup"
-        displayName: "cleanup"
+        displayName: "remove virtual environ on failure"
         condition: failed()
         dependsOn: dependencies
         pool: "Azure Self-Hosted"
