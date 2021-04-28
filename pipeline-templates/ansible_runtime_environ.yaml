@@ -4,12 +4,12 @@ parameters:
   - name: pipeline
 
 jobs:
-  - job: "dependencies"
-    displayName: "installing dependencies"
+  - job: "files"
+    displayName: "copy files to ACS"
     pool: "Azure Self-Hosted"
     steps:
       - task: CopyFilesOverSSH@0
-        displayName: "transfer ansible files to ACS"
+        displayName: "copying"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           contents: "**"
@@ -17,6 +17,10 @@ jobs:
           readyTimeout: "20000"
           cleanTargetFolder: true
           failOnEmptySource: true
+  - job: "environment"
+    displayName: "create environment"
+    pool: "Azure Self-Hosted"
+    steps:
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
@@ -37,3 +41,16 @@ jobs:
             cd azure_pipelines/${{ parameters.pipeline }}
             pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
           readyTimeout: "20000"
+    - job: "dependencies"
+      displayName: "installing dependencies"
+      pool: "Azure Self-Hosted"
+      steps:
+        - task: SSH@0
+          displayName: "install requirements"
+          inputs:
+            sshEndpoint: ${{ parameters.service_connection }}
+            runOptions: "inline"
+            inline: |
+              cd azure_pipelines/${{ parameters.pipeline }}
+              pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
+            readyTimeout: "20000"

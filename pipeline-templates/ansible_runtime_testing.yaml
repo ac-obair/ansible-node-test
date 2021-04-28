@@ -5,8 +5,8 @@ parameters:
   - name: playbook
 
 jobs:
-  - job: "linting"
-    displayName: "lint and syntax checks"
+  - job: "syntax-check"
+    displayName: "syntax checks"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
@@ -18,6 +18,10 @@ jobs:
             cd azure_pipelines/${{ parameters.pipeline }}
             ansible-playbook --syntax-check ${{ parameters.playbook }}.yaml
           readyTimeout: "20000"
+  - job: "lint"
+    displayName: "linting"
+    pool: "Azure Self-Hosted"
+    steps:
       - task: SSH@0
         displayName: "linter"
         inputs:
