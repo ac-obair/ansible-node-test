@@ -44,7 +44,8 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
+              commands: "echo $PATH"
+              #commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
