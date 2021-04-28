@@ -44,7 +44,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
+              commands: "ANSIBLE_NOCOLOR=0 ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
@@ -52,13 +52,23 @@ stages:
     jobs:
       - job: "linting"
         displayName: "lint and syntax check"
+        pool: "Azure Self-Hosted"
         steps:
-          - task: Bash@3
-            displayName: "molecule"
+          - task: SSH@0
+            displayName: "syntax check"
             inputs:
-              targetType: "inline"
-              script: |
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "commands"
+              commands: "ANSIBLE_NOCOLOR=0 ansible-playbook --syntax-check azure_pipelines/ansible-node-test/test.yaml"
+              readyTimeout: "20000"
+          - task: SSH@0
+            displayName: "linter"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "inline"
+              inline: |
                 echo "hello, world! from molecule test"
+              readyTimeout: "20000"
 
   - stage: "ansible_runtime_checking"
     displayName: "check_mode"
