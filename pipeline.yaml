@@ -32,7 +32,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               contents: "**"
-              targetFolder: "azure_pipelines/${{ pipeline }}"
+              targetFolder: "azure_pipelines/$(pipeline)"
               readyTimeout: "20000"
               cleanTargetFolder: true
               failOnEmptySource: true
@@ -42,10 +42,10 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                pyenv virtualenv-delete -f ${{ pipeline }}
-                pyenv virtualenv ${{ pipeline }}
-                cd azure_pipelines/${{ pipeline }}
-                pyenv local ${{ pipeline }}
+                pyenv virtualenv-delete -f $(pipeline)
+                pyenv virtualenv $(pipeline)
+                cd azure_pipelines/$(pipeline)
+                pyenv local $(pipeline)
               readyTimeout: "20000"
           - task: SSH@0
             displayName: "install requirements"
@@ -53,7 +53,7 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                cd azure_pipelines/${{ pipeline }}
+                cd azure_pipelines/$(pipeline)
                 pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
               readyTimeout: "20000"
                 
@@ -70,7 +70,7 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                cd azure_pipelines/${{ pipeline }}
+                cd azure_pipelines/$(pipeline)
                 ansible-playbook --syntax-check nginx-configs.yaml
               readyTimeout: "20000"
           - task: SSH@0
@@ -95,7 +95,7 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                cd azure_pipelines/${{ pipeline }}
+                cd azure_pipelines/$(pipeline)
                 ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
 
   - stage: "ansible_runtime_provisioning"
@@ -112,7 +112,7 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                cd azure_pipelines/${{ pipeline }}
+                cd azure_pipelines/$(pipeline)
                 ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
           - task: SSH@0
             displayName: "post deploy tests"
@@ -127,4 +127,4 @@ stages:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
               inline: |
-                pyenv virtualenv-delete ${{ pipeline }} -f
+                pyenv virtualenv-delete $(pipeline) -f
