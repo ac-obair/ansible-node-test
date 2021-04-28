@@ -31,6 +31,7 @@ stages:
               contents: "**"
               targetFolder: "azure_pipelines/ansible-node-test"
               readyTimeout: "20000"
+              cleanTargetFolder: true
               failOnEmptySource: true
           - task: SSH@0
             displayName: "install requirements"
