@@ -50,7 +50,7 @@ stages:
               runOptions: "inline"
               inline: |
                 cd azure_pipelines/ansible-node-test
-                pip install --user --no-warn-script-location --disable-pip-version-check -r requirements.txt
+                pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
