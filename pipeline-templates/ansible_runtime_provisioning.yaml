@@ -20,6 +20,6 @@ jobs:
           runOptions: "inline"
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
-            ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parametes.tags }} --limit ${{ parameters.hosts }}
+            ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parameters.tags }} --limit ${{ parameters.hosts }}
 
 
