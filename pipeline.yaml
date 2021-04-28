@@ -17,32 +17,75 @@ pool:
   vmImage: "ubuntu-18.04"
 
 stages:
-  - stage: "ansible_test"
-    displayName: "ansible runtime testing"
+  - stage: "ansible_runtime_environ"
+    displayName: "prepare_environ"
     jobs:
-      - job: "test"
-        displayName: "ansible-test"
-        steps:
-          - task: Bash@3
-            displayName: "molecule test"
-            inputs:
-              targetType: "inline"
-              script: |
-                echo "hello, world! from molecule test"
-
-  - stage: "ansible_check"
-    displayName: "ansible runtime checking"
-    jobs:
-      - job: "check"
+      - job: "dependencies"
+        displayName: "installing dependencies"
         pool: "Azure Self-Hosted"
-        displayName: "ansible-check"
         steps:
-          - bash: "hostname"
-            displayName: "check host"
-          - bash: "ls && pwd"
-            displayName: "check pwd"
-              
+          - task: CopyFilesOverSSH@0
+            displayName: "copy ansible files"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              contents: "**"
+              targetFolder: "azure_pipelines/ansible-node-test"
+              readyTimeout: "20000"
+              cleanTargetFolder: true
+              failOnEmptySource: true
+          - task: SSH@0
+            displayName: "install requirements"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "commands"
+              commands: "pip install --user --no-warn-script-location --disable-pip-version-check -r azure_pipelines/ansible-node-test/requirements.txt"
+              readyTimeout: "20000"
+
+  - stage: "ansible_runtime_testing"
+    displayName: "static_analysis"
+    jobs:
+      - job: "linting"
+        displayName: "lint and syntax checks"
+        pool: "Azure Self-Hosted"
+        steps:
+          - task: SSH@0
+            displayName: "syntax check"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "inline"
+              inline: |
+                cd azure_pipelines/ansible-node-test
+                ansible-playbook --syntax-check nginx-configs.yaml
+              readyTimeout: "20000"
+          - task: SSH@0
+            displayName: "linter"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "inline"
+              inline: |
+                echo "hello, world! from molecule test"
+              readyTimeout: "20000"
+
+  - stage: "ansible_runtime_checking"
+    displayName: "check_mode"
+    jobs:
+      - job: "checking"
+        displayName: "playbook dry-run"
+        pool: "Azure Self-Hosted"
+        steps:
+          - task: SSH@0
+            displayName: "ansible-playbook -CD inline"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "inline"
+              inline: |
+                cd azure_pipelines/ansible-node-test
+                ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
           - task: Ansible@0
+            displayName: "ansible-playbook -CD"
+            env:
+              ANSIBLE_FORCE_COLOR: true
+              ANSIBLE_NOCOLOR: false
             inputs:
               ansibleInterface: "remoteMachine"
               connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
@@ -51,15 +94,16 @@ stages:
               playbookPathLinkedArtifactOnRemoteMachine: "nginx-configs.yaml"
               inventoriesRemoteMachine: "file"
               inventoryFileSourceRemoteMachine: "agentMachine"
-              inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
+              inventoryFileLinkedArtifactOnRemoteMachine: "inventory/inventory"
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
-              
-  - stage: "ansible_runtime"
-    displayName: "ansible runtime provisioning"
+
+  - stage: "ansible_runtime_provisioning"
+    displayName: "applying_changes"
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
-      - job: "deploy"
+      - job: "deploying"
+        displayName: "playbook rollout"
         pool: "Azure Self-Hosted"
-        displayName: "ansible-playbook"
         steps:
           - task: Bash@3
             displayName: "ansible-playbook"

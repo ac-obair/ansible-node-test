@@ -1,6 +1,9 @@
 [all:vars]
 env=dev
 
+[defaults]
+localhost ansible_connection=local
+
 [web_servers]
 iweb1.arnoldclark.com
 iweb2.arnoldclark.com
