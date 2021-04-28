@@ -4,7 +4,6 @@ PyYAML
 selinux
 boto3
 botocore
-hvac
 requests
 azure==4.0.0
 dnspython
