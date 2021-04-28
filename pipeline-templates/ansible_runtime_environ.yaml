@@ -1,0 +1,39 @@
+parameters:
+  - name: service_connection
+    default: rdp03-ansible-agent-ssh-service-connection
+  - name: pipeline
+
+jobs:
+  - job: "dependencies"
+    displayName: "installing dependencies"
+    pool: "Azure Self-Hosted"
+    steps:
+      - task: CopyFilesOverSSH@0
+        displayName: "transfer ansible files to ACS"
+        inputs:
+          sshEndpoint: ${{ parameters.service_connection }}
+          contents: "**"
+          targetFolder: "azure_pipelines/${{ parameters.pipeline }}"
+          readyTimeout: "20000"
+          cleanTargetFolder: true
+          failOnEmptySource: true
+      - task: SSH@0
+        displayName: "create virtual environment"
+        inputs:
+          sshEndpoint: ${{ parameters.service_connection }}
+          runOptions: "inline"
+          inline: |
+            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
+            pyenv virtualenv -f ${{ parameters.pipeline }}
+            cd azure_pipelines/${{ parameters.pipeline }}
+            pyenv local ${{ parameters.pipeline }}
+          readyTimeout: "20000"
+      - task: SSH@0
+        displayName: "install requirements"
+        inputs:
+          sshEndpoint: ${{ parameters.service_connection }}
+          runOptions: "inline"
+          inline: |
+            cd azure_pipelines/${{ parameters.pipeline }}
+            pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
+          readyTimeout: "20000"
