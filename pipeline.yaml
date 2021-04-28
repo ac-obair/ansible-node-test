@@ -44,7 +44,7 @@ stages:
         pipeline: $(pipeline)
         playbook: $(playbook)
         tags: "gearbox,acdotcom"
-        hosts: "iweb2.arnoldclark.com,iweb3.arnoldclark.com"
+        hosts: "iweb2.arnoldclark.com"
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"

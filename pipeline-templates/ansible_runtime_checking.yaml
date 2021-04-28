@@ -9,7 +9,7 @@ parameters:
     default: ""
 
 jobs:
-  - job: "checking"
+  - job: "playbook dry-run"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
