@@ -5,7 +5,7 @@ parameters:
   - name: playbook
 
 jobs:
-  - job: "syntax-check"
+  - job: "syntax_check"
     displayName: "syntax checks"
     pool: "Azure Self-Hosted"
     steps:
