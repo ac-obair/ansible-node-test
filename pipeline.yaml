@@ -25,7 +25,7 @@ stages:
         pool: "Azure Self-Hosted"
         steps:
           - task: CopyFilesOverSSH@0
-            displayName: "copy requirements file"
+            displayName: "copy ansible files"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               contents: "**"
@@ -33,7 +33,7 @@ stages:
               readyTimeout: "20000"
               failOnEmptySource: true
           - task: SSH@0
-            displayName: "pip install"
+            displayName: "install requirements"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
@@ -43,8 +43,10 @@ stages:
             displayName: "testing playbook"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "commands"
-              commands: "ANSIBLE_NOCOLOR=0 ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
+              runOptions: "inline"
+              inline: |
+                cd azure_pipelines/ansible-node-test
+                ansible-playbook test.yaml
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
@@ -58,8 +60,10 @@ stages:
             displayName: "syntax check"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "commands"
-              commands: "ansible-playbook --syntax-check azure_pipelines/ansible-node-test/test.yaml"
+              runOptions: "inline"
+              inline: |
+                cd azure_pipelines/ansible-node-test
+                ansible-playbook --syntax-check test.yaml
               readyTimeout: "20000"
           - task: SSH@0
             displayName: "linter"
@@ -77,6 +81,14 @@ stages:
         displayName: "playbook dry-run"
         pool: "Azure Self-Hosted"
         steps:
+          - task: SSH@0
+            displayName: "ansible-playbook -CD inline"
+            inputs:
+              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+              runOptions: "inline"
+              inline: |
+                cd azure_pipelines/ansible-node-test
+                ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
           - task: Ansible@0
             displayName: "ansible-playbook -CD"
             env:
@@ -90,7 +102,7 @@ stages:
               playbookPathLinkedArtifactOnRemoteMachine: "nginx-configs.yaml"
               inventoriesRemoteMachine: "file"
               inventoryFileSourceRemoteMachine: "agentMachine"
-              inventoryFileLinkedArtifactOnRemoteMachine: "dev/inventory"
+              inventoryFileLinkedArtifactOnRemoteMachine: "inventory/inventory"
               args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
 
   - stage: "ansible_runtime_provisioning"
