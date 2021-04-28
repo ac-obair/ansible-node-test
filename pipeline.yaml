@@ -81,21 +81,6 @@ stages:
               inline: |
                 cd azure_pipelines/ansible-node-test
                 ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
-          - task: Ansible@0
-            displayName: "ansible-playbook -CD"
-            env:
-              ANSIBLE_FORCE_COLOR: true
-              ANSIBLE_NOCOLOR: false
-            inputs:
-              ansibleInterface: "remoteMachine"
-              connectionOverSsh: "rdp03-ansible-agent-ssh-service-connection"
-              playbookSourceRemoteMachine: "agentMachine"
-              playbookRootRemoteMachine: "$(System.DefaultWorkingDirectory)"
-              playbookPathLinkedArtifactOnRemoteMachine: "nginx-configs.yaml"
-              inventoriesRemoteMachine: "file"
-              inventoryFileSourceRemoteMachine: "agentMachine"
-              inventoryFileLinkedArtifactOnRemoteMachine: "inventory/inventory"
-              args: "-CD --tags gearbox --limit iweb2.arnoldclark.com"
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
