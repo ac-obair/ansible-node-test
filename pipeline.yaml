@@ -47,6 +47,8 @@ stages:
               inline: |
                 echo $PATH
                 python -V
+                ansible-playbook --version
+                PATH=~/.local/bin/ ansible-playbook --version
               interpreterCommand: "/bin/bash"
               #commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
