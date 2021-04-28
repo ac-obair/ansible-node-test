@@ -44,8 +44,10 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "inline"
-              inline: "echo $PATH"
-              interpreterCommand: "/bin/bash -lc"
+              inline: |
+                echo $PATH
+                python -V
+              interpreterCommand: "/bin/bash"
               #commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
 
