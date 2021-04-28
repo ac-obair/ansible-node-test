@@ -29,7 +29,7 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               contents: "requirements.txt \n test.yaml"
-              targetFolder: "created_by_azure_pipeline"
+              targetFolder: "azure_pipelines/ansible-node-test"
               readyTimeout: "20000"
               failOnEmptySource: true
           - task: SSH@0
@@ -37,14 +37,14 @@ stages:
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "pip install --user -r created_by_azure_pipeline/requirements.txt"
+              commands: "pip install --user --no-warn-script-location  -r azure_pipelines/ansible-node-test/requirements.txt"
               readyTimeout: "20000"
           - task: SSH@0
             displayName: "testing playbook"
             inputs:
               sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
               runOptions: "commands"
-              commands: "ansible-playbook created_by_azure_pipeline/test.yaml"
+              commands: "ansible-playbook azure_pipelines/ansible-node-test/test.yaml"
               readyTimeout: "20000"
 
   - stage: "ansible_runtime_testing"
