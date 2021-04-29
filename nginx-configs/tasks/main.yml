@@ -1,6 +1,6 @@
 ---
 - name: Check for installed firewall
-  shell: "yum list installed | grep firewalld"
+  shell: "set -e -o pipefail && yum list installed | grep firewalld"
   failed_when: False
   changed_when: False
   register: firewalld_present

@@ -16,9 +16,10 @@
 - name: Apply SELinux context to log directory
   command: "restorecon -R {{ webapps_root }}/{{ item.name }}/shared/log"
   loop: "{{ rails_applications }}"
+  when: error
 
 - name: Check for existing SELinux module
-  shell: "semodule -l | grep unicorn_nginx"
+  shell: "set -e -o pipefail && semodule -l | grep unicorn_nginx"
   failed_when: False
   changed_when: False
   register: selinux_present
