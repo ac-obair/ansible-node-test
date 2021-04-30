@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-node-test"
+      include_role:
+        name: "ansible-node-test"
