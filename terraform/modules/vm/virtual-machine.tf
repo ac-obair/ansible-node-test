@@ -1,7 +1,7 @@
 resource "vsphere_virtual_machine" "vm" {
   name             = var.virtual-machine-name
   resource_pool_id = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
-  datastore_id     = data.vsphere_datastore_cluster.datastore_cluster.id
+  datastore_id     = data.vsphere_datastore.datastore.id
   folder           = data.vsphere_folder.folder.id
 
   num_cpus = 2
@@ -25,15 +25,7 @@ resource "vsphere_virtual_machine" "vm" {
     eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub
     thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
   }
-
-  disk {
-    label            = "disk1"
-    unit_number      = 1
-    size             = data.vsphere_virtual_machine.template.disks.1.size
-    eagerly_scrub    = data.vsphere_virtual_machine.template.disks.1.eagerly_scrub
-    thin_provisioned = data.vsphere_virtual_machine.template.disks.1.thin_provisioned
-  }
-
+  
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
 

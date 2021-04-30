@@ -19,14 +19,12 @@ variable "vsphere-datacentre" {
     description = "The datacentre in which the compute resources are housed"
 }
 
+// set to single datastore because PDC-PL doesn't have a storage-cluster interface
+// should be "vsphere-storage-cluster" {} same as production
 variable "vsphere-storage-datastore" {
-    default = ""
-}
-
-variable "vsphere-storage-cluster" {
-    default     = "HX Datastore Cluster"
+    default     = "PDC_Datastore_AO_Dev01"
     type        = string
-    description = "The storage cluster with which to provision the virtual-machine. This can be a storage cluster or regular datastore"
+    description = "The storage backend used in lieu of resource 'vsphere-storage-cluster' {}"
 }
 
 variable "ip_address" {
@@ -35,9 +33,8 @@ variable "ip_address" {
 }
 
 variable "vlan" {
-    default     = "ACVLAN160"
     type        = string
-    description = "The IP address of the vm's ens160 interface."
+    description = "The vlan in which the vnic is assigned."
 }
 
 variable "default-gateway" {
@@ -45,7 +42,9 @@ variable "default-gateway" {
     description = "The default gateway of the vm."
 }
 
+// DEV is an existing filesystem created by the platform engineering teams 
 variable "folder" {
+    default     = "DEV/azure-pipeline-testing"
     type        = string
     description = "The name of the folder in which to logically place the vm."
 }
