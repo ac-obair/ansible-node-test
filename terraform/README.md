@@ -1,3 +1,4 @@
+parallel infrastructure terraform
 #### authenticating
 A common automation user should be used and credentials protected in the pipeline as secrets. However for testing credentials can be injected into the environment. Note special characters in passwords will have to be escaped. When creating the environ vars you don't need to specify `user` or `pass` in the hcl. 
 
