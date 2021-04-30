@@ -3,6 +3,7 @@ ansible-lint
 yamllint==1.26.1
 molecule
 ruamel.yaml
+azure-cli
 packaging
 PyYAML
 selinux
