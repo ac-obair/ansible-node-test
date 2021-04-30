@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  author: Jason Leitch
-  description: provision nginx application configs
+  author: archops@arnoldclark.com
+  description: Provision nginx application configs
   company: ArnoldClark Automobiles ltd
-  license: license (GPL-2.0-or-later, MIT, etc)
+  license: MIT
 
   min_ansible_version: 2.10
 
