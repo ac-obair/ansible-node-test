@@ -2,6 +2,9 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include ansible-node-test"
-      include_role:
-        name: "ansible-node-test"
+    - name: "performing setup tasks"
+      debug:
+        msg: "yolo!"
+    - name: "importing playbook"
+      import_playbook: 
+        name: "../nginx-configs.yaml"

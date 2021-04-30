@@ -5,30 +5,72 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-
-    # TODO: Developer must implement and populate 'server' variable
-
+    - name: clone iweb2.arnoldclark.com
+      community.general.terraform:
+        project_path: "$HOME/ac/ansible-node-test/terraform/vms"
+        state: present
+      environment:
+        VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+        VSPHERE_USER: "e0055059"
+      register: server
+        # VSPHERE_PASSWORD: "{{ molecule_yml.driver.vsphere_password }}"
+        # VSPHERE_USER: "{{ molecule_yml.driver.vsphere_user }}"
+        # check port 22 available on 10.31.2.10
+    - name: output clone vars
+      debug:
+        msg: "{{ server }}"
+  
     - when: server.changed | default(false) | bool
       block:
         - name: Populate instance config dict
           set_fact:
             instance_conf_dict: {
-              'instance': "{{ }}",
-              'address': "{{ }}",
-              'user': "{{ }}",
-              'port': "{{ }}",
-              'identity_file': "{{ }}", }
-          with_items: "{{ server.results }}"
+              "instance": "{{ server.outputs.instance-name.value }}",
+              "address": "{{ server.outputs.instance-ip.value }}",
+              "user": "root",
+              "port": 22,
+              "identity_file": "~/.ssh.id_rsa", }
           register: instance_config_dict
+  
+      # "msg": {
+      #   "changed": true,
+      #   "command": "/usr/local/bin/terraform apply -no-color -input=false -auto-approve=true -lock=true /tmp/tmpmxty3uj2.tfplan",
+      #   "failed": false,
+      #   "outputs": {
+      #       "instance-ip": {
+      #           "sensitive": false,
+      #           "type": "string",
+      #           "value": "10.31.2.10"
+      #       },
+      #       "instance-name": {
+      #           "sensitive": false,
+      #           "type": "string",
+      #           "value": "5721823e-7568-19ed-5db8-6768b608c0bd"
+      #       }
+      #   },
 
-        - name: Convert instance config dict to a list
-          set_fact:
-            instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
 
-        - name: Dump instance config
-          copy:
-            content: |
-              # Molecule managed
+    # - when: server.changed | default(false) | bool
+    #   block:
+    #     - name: Populate instance config dict
+    #       set_fact:
+    #         instance_conf_dict: {
+    #           'instance': "{{ }}",
+    #           'address': "{{ }}",
+    #           'user': "{{ }}",
+    #           'port': "{{ }}",
+    #           'identity_file': "{{ }}", }
+    #       with_items: "{{ server.results }}"
+    #       register: instance_config_dict
 
-              {{ instance_conf | to_json | from_json | to_yaml }}
-            dest: "{{ molecule_instance_config }}"
+    #     - name: Convert instance config dict to a list
+    #       set_fact:
+    #         instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
+
+    #     - name: Dump instance config
+    #       copy:
+    #         content: |
+    #           # Molecule managed
+
+    #           {{ instance_conf | to_json | from_json | to_yaml }}
+    #         dest: "{{ molecule_instance_config }}"

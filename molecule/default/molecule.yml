@@ -3,11 +3,14 @@ dependency:
   name: galaxy
 driver:
   name: delegated
+  # vsphere_user: e0055059
+  # vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
 lint: |
   set -e
   yamllint .
   ansible-lint
-  ansible-playbook --syntax-check
+syntax: |
+    ansible-playbook --syntax-check
 platforms:
   - name: instance
 provisioner:
