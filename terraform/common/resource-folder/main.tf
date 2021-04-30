@@ -1,0 +1,20 @@
+data "vsphere_datacenter" "datacentre" {
+  name = var.vsphere-datacentre
+}
+
+data "vsphere_compute_cluster" "compute_cluster" {
+  name          = var.vsphere-compute
+  datacenter_id = data.vsphere_datacenter.datacentre.id
+}
+
+data "vsphere_datastore_cluster" "datastore_cluster" {
+  name          = var.vsphere-storage-cluster
+  datacenter_id = data.vsphere_datacenter.datacentre.id
+}
+
+locals {
+  common-tags = {
+    Terraform   = "true"
+    Environment = "development"
+  }
+}
