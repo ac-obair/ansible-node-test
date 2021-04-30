@@ -2,7 +2,9 @@ resource "vsphere_virtual_machine" "vm" {
   name             = var.virtual-machine-name
   resource_pool_id = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
   datastore_id     = data.vsphere_datastore.datastore.id
-  folder           = data.vsphere_folder.folder.id
+  // folder path is relative which data block path is absolute
+  folder           = trimprefix(data.vsphere_folder.folder.path, "/PDC/vm")
+
 
   num_cpus = 2
   cpu_hot_add_enabled = true 
@@ -25,7 +27,7 @@ resource "vsphere_virtual_machine" "vm" {
     eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub
     thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
   }
-  
+
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
 

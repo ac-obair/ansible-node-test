@@ -22,7 +22,7 @@ variable "vsphere-datacentre" {
 // set to single datastore because PDC-PL doesn't have a storage-cluster interface
 // should be "vsphere-storage-cluster" {} same as production
 variable "vsphere-storage-datastore" {
-    default     = "PDC_Datastore_AO_Dev01"
+    default     = "PDC_Datastore_SSD_Prod01"
     type        = string
     description = "The storage backend used in lieu of resource 'vsphere-storage-cluster' {}"
 }
