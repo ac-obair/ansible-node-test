@@ -1,5 +1,6 @@
 ansible~=2.10
 ansible-lint
+molecule[docker]
 ruamel.yaml
 packaging
 PyYAML
