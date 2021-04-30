@@ -12,11 +12,6 @@ data "vsphere_datastore" "datastore" {
   datacenter_id = data.vsphere_datacenter.datacentre.id
 }
 
-// data "vsphere_datastore_cluster" "datastore_cluster" {
-//   name          = var.vsphere-storage-cluster
-//   datacenter_id = data.vsphere_datacenter.datacentre.id
-// }
-
 data "vsphere_network" "vlan" {
   name          = var.vlan
   datacenter_id = data.vsphere_datacenter.datacentre.id
