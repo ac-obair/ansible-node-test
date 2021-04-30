@@ -1,12 +1,10 @@
 parallel infrastructure terraform
 #### authenticating
 A common automation user should be used and credentials protected in the pipeline as secrets. However for testing credentials can be injected into the environment. Note special characters in passwords will have to be escaped. When creating the environ vars you don't need to specify `user` or `pass` in the hcl. 
-
 ```bash
 export VSPHERE_PASSWORD=<pass>
 export VSPHERE_USER=<user>
 ```
-
 #### datastore clusters
 The "dev" hosts don't have data store clusters implenented this means the exact same terraform can't be used acorss all scenarios. In prd the datastore clusters don't have the same name, this also means the exact same terraform can't be used across datacentres without some conditional branching. 
 
