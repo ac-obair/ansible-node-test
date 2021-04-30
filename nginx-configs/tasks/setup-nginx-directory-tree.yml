@@ -9,7 +9,7 @@
 - name: Install Dependency Packages
   yum:
     name: nginx
-    state: latest
+    state: present
 
 - name: Create the nginx log directory
   file:

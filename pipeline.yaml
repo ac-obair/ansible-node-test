@@ -17,114 +17,42 @@ pool:
   vmImage: "ubuntu-18.04"
 
 variables:
-  pipeline: ansible-node-test
+ pipeline: ansible-node-test
+ playbook: nginx-configs
 
 stages:
   - stage: "ansible_runtime_environ"
     displayName: "prepare_environ"
     jobs:
-      - job: "dependencies"
-        displayName: "installing dependencies"
-        pool: "Azure Self-Hosted"
-        steps:
-          - task: CopyFilesOverSSH@0
-            displayName: "transfer ansible files to ACS"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              contents: "**"
-              targetFolder: "azure_pipelines/$(pipeline)"
-              readyTimeout: "20000"
-              cleanTargetFolder: true
-              failOnEmptySource: true
-          - task: SSH@0
-            displayName: "create virtual environment"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                pyenv virtualenvs --bare | grep $(pipeline) && pyenv virtualenv-delete -f $(pipeline)
-                pyenv virtualenv -f $(pipeline)
-                cd azure_pipelines/$(pipeline)
-                pyenv local $(pipeline)
-              readyTimeout: "20000"
-          - task: SSH@0
-            displayName: "install requirements"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                cd azure_pipelines/$(pipeline)
-                pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
-              readyTimeout: "20000"
-                
+    - template: pipeline-templates/ansible_runtime_environ.yaml
+      parameters:
+        pipeline: $(pipeline)
+
   - stage: "ansible_runtime_testing"
     displayName: "static_analysis"
     jobs:
-      - job: "linting"
-        displayName: "lint and syntax checks"
-        pool: "Azure Self-Hosted"
-        steps:
-          - task: SSH@0
-            displayName: "syntax check"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                cd azure_pipelines/$(pipeline)
-                ansible-playbook --syntax-check nginx-configs.yaml
-              readyTimeout: "20000"
-          - task: SSH@0
-            displayName: "linter"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                echo "hello, world! from molecule test"
-              readyTimeout: "20000"
+    - template: pipeline-templates/ansible_runtime_testing.yaml
+      parameters:
+        pipeline: $(pipeline)
+        playbook: $(playbook)
 
   - stage: "ansible_runtime_checking"
     displayName: "check_mode"
     jobs:
-      - job: "checking"
-        displayName: "playbook dry-run"
-        pool: "Azure Self-Hosted"
-        steps:
-          - task: SSH@0
-            displayName: "ansible-playbook -CD inline"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                cd azure_pipelines/$(pipeline)
-                ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
+    - template: pipeline-templates/ansible_runtime_checking.yaml
+      parameters: 
+        pipeline: $(pipeline)
+        playbook: $(playbook)
+        tags: "gearbox,acdotcom"
+        hosts: "iweb2.arnoldclark.com"
 
   - stage: "ansible_runtime_provisioning"
     displayName: "applying_changes"
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
-      - job: "deploying"
-        displayName: "playbook rollout"
-        pool: "Azure Self-Hosted"
-        steps:
-          - task: SSH@0
-            displayName: "ansible-playbook"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                cd azure_pipelines/$(pipeline)
-                ansible-playbook nginx-configs.yaml -CD --tags gearbox --limit iweb2.arnoldclark.com
-          - task: SSH@0
-            displayName: "post deploy tests"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                echo hello, world!
-          - task: SSH@0
-            displayName: "clean dependency environment"
-            inputs:
-              sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
-              runOptions: "inline"
-              inline: |
-                pyenv virtualenv-delete -f $(pipeline)
+    - template: pipeline-templates/ansible_runtime_provisioning.yaml
+      parameters: 
+        pipeline: $(pipeline)
+        playbook: $(playbook)
+        tags: "gearbox,acdotcom"
+        hosts: "iweb2.arnoldclark.com,iweb3.arnoldclark.com"

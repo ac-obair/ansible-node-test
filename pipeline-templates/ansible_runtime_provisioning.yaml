@@ -1,0 +1,25 @@
+parameters:
+  - name: service_connection
+    default: rdp03-ansible-agent-ssh-service-connection
+  - name: pipeline
+  - name: playbook
+  - name: tags
+    default: ""
+  - name: hosts
+    default: "" 
+
+jobs:
+  - job: "deploying"
+    displayName: "playbook rollout"
+    pool: "Azure Self-Hosted"
+    steps:
+      - task: SSH@0
+        displayName: "ansible-playbook"
+        inputs:
+          sshEndpoint: ${{ parameters.service_connection }}
+          runOptions: "inline"
+          inline: |
+            cd azure_pipelines/${{ parameters.pipeline }}
+            ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parameters.tags }} --limit ${{ parameters.hosts }}
+
+

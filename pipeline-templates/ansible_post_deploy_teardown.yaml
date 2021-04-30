@@ -1,0 +1,19 @@
+jobs:
+  - job: "deploying"
+    displayName: "playbook rollout"
+    pool: "Azure Self-Hosted"
+    steps:
+      - task: SSH@0
+        displayName: "post deploy tests"
+        inputs:
+          sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+          runOptions: "inline"
+          inline: |
+            echo hello, world!
+      - task: SSH@0
+        displayName: "clean dependency environment"
+        inputs:
+          sshEndpoint: "rdp03-ansible-agent-ssh-service-connection"
+          runOptions: "inline"
+          inline: |
+            pyenv virtualenv-delete -f $(pipeline)
