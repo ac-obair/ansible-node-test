@@ -11,8 +11,9 @@ lint: |
   ansible-lint
 syntax: |
     ansible-playbook --syntax-check
+# platforms.name is used in combination with instance_config_dict to dynamically write the inventory file
 platforms:
-  - name: instance
+  - name: azure-pipeline-created-iweb-instance
 provisioner:
   name: ansible
 verifier:
