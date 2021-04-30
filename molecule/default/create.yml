@@ -5,72 +5,58 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    - name: clone iweb2.arnoldclark.com
+    # required storage account auth token for terraform init
+    # - name: 
+    #   command: az account show || az login
+    - name: Get Azure Storage Account access key
+      command: az storage account keys list -g "terraform-remote-state" -n "actfstate" --subscription "DPD" --query "[0].value" --output tsv
+      register: access_key
+
+    - name: Terraform clone iweb2.arnoldclark.com
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: present
+        # force_init: true
+        # backend_config:
+        #    access_key: "{{ access_key.stdout }}"
+        #    upgrade: true
       environment:
         VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
         VSPHERE_USER: "e0055059"
-      register: server
         # VSPHERE_PASSWORD: "{{ molecule_yml.driver.vsphere_password }}"
         # VSPHERE_USER: "{{ molecule_yml.driver.vsphere_user }}"
-        # check port 22 available on 10.31.2.10
-    - name: output clone vars
-      debug:
-        msg: "{{ server }}"
+      register: server
   
     - when: server.changed | default(false) | bool
       block:
         - name: Populate instance config dict
           set_fact:
-            instance_conf_dict: {
-              "instance": "{{ server.outputs.instance-name.value }}",
-              "address": "{{ server.outputs.instance-ip.value }}",
-              "user": "root",
-              "port": 22,
-              "identity_file": "~/.ssh.id_rsa", }
+            # server object is used to gather terraform outputs in order to build a dynamic inventory 
+            instance_conf_dict:
+              # instance: "{{ server.outputs.instance_name.value }}"
+              address: "{{ server.outputs.instance_ip.value }}"
+              user: "root"
+              port: 22
+              identity_file: "~/.ssh.id_rsa"
           register: instance_config_dict
-  
-      # "msg": {
-      #   "changed": true,
-      #   "command": "/usr/local/bin/terraform apply -no-color -input=false -auto-approve=true -lock=true /tmp/tmpmxty3uj2.tfplan",
-      #   "failed": false,
-      #   "outputs": {
-      #       "instance-ip": {
-      #           "sensitive": false,
-      #           "type": "string",
-      #           "value": "10.31.2.10"
-      #       },
-      #       "instance-name": {
-      #           "sensitive": false,
-      #           "type": "string",
-      #           "value": "5721823e-7568-19ed-5db8-6768b608c0bd"
-      #       }
-      #   },
 
+    # - name: set instance_config_dict manually
+    #   set_fact:
+    #     molecule_instance_config: $HOME/.cache/molecule/ansible-node-test/default/instance_config.yml
+    #     instance_config_dict:  { "ansible_facts": { "instance_conf_dict": { "address": "10.31.2.10", "identity_file": "~/.ssh.id_rsa", "instance": "be299763-69e4-9979-1e77-1bd33bc419d8", "port": 22, "user": "root" } }, "changed": false, "failed": false }
+    #   no_log: false
 
-    # - when: server.changed | default(false) | bool
-    #   block:
-    #     - name: Populate instance config dict
-    #       set_fact:
-    #         instance_conf_dict: {
-    #           'instance': "{{ }}",
-    #           'address': "{{ }}",
-    #           'user': "{{ }}",
-    #           'port': "{{ }}",
-    #           'identity_file': "{{ }}", }
-    #       with_items: "{{ server.results }}"
-    #       register: instance_config_dict
+    # instance_config_dict json output must be wrapped in container [] for map() to work properly, for cases when there are many instances
+    - name: Convert instance config dict to a list
+      set_fact:
+        instance_conf: "{{ [instance_config_dict] | map(attribute='ansible_facts.instance_conf_dict') | list }}"
+      # no_log: false
 
-    #     - name: Convert instance config dict to a list
-    #       set_fact:
-    #         instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
-
-    #     - name: Dump instance config
-    #       copy:
-    #         content: |
-    #           # Molecule managed
-
-    #           {{ instance_conf | to_json | from_json | to_yaml }}
-    #         dest: "{{ molecule_instance_config }}"
+    - name: Dump instance config
+      copy:
+        content: |
+          ---
+          # Molecule managed
+          {{ instance_conf | to_nice_yaml(indent=2, width=1337) }}
+        dest: "{{ molecule_instance_config }}"
+      # no_log: false
