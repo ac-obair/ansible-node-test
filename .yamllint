@@ -15,3 +15,8 @@ rules:
     max-spaces-inside: 3
     min-spaces-inside-empty: -1
     max-spaces-inside-empty: -1
+  quoted-strings:
+    quote-type: any
+    required: false
+    extra-required: []
+    extra-allowed: []
