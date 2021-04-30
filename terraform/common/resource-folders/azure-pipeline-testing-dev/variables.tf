@@ -15,7 +15,7 @@ variable "vsphere-compute" {
 variable "vsphere-storage-datastore" {
     default     = "PDC_Datastore_AO_Dev01"
     type        = string
-    description = "The storage backend used in lieu of vsphere-storage-cluster"
+    description = "The storage backend used in lieu of resource 'vsphere-storage-cluster' {}"
 }
 
 // DEV is an existing filesystem created by the platform engineering teams 
