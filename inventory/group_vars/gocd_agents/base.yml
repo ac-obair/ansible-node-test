@@ -1,3 +1,4 @@
+---
 GOCD_USER: go
 GOCD_HOME_DIR: "/home/{{ GOCD_USER }}"
 GOCD_INSTALL_SERVER: false

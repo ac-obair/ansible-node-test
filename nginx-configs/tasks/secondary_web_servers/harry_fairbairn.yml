@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for harry_fairbairn
   template:
     src: "server/secondary_web_servers/harry_fairbairn.server.conf.j2"

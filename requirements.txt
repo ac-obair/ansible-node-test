@@ -1,6 +1,7 @@
 ansible~=2.10
 ansible-lint
-molecule[docker]
+yamllint==1.26.1
+molecule
 ruamel.yaml
 packaging
 PyYAML

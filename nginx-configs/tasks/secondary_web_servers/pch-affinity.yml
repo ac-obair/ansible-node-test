@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for pch-affinity
   template:
     src: "server/secondary_web_servers/pch-affinity.server.conf.j2"

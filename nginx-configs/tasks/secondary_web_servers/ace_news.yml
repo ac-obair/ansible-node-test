@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for ace_news
   template:
     src: "server/secondary_web_servers/ace_news.server.conf.j2"

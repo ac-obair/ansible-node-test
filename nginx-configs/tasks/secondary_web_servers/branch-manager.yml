@@ -1,3 +1,4 @@
+---
 - name: Install web app config files for branch-manager
   template:
     src: "locations/secondary_web_servers/branch-manager.app.conf.j2"

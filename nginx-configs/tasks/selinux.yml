@@ -1,5 +1,4 @@
 ---
-
 - name: Set SELinux context for webapp files
   community.general.sefcontext:
     setype: etc_runtime_t
@@ -31,25 +30,25 @@
     mode: 0777
     owner: root
     group: root
-  when: 
+  when:
     - not ansible_check_mode
     - selinux_present.rc > 0
 
 - name: Check SELinux policy
-  command:  /usr/bin/checkmodule -M -m -o /tmp/unicorn_nginx.mod /tmp/unicorn_nginx.te
-  when: 
+  command: /usr/bin/checkmodule -M -m -o /tmp/unicorn_nginx.mod /tmp/unicorn_nginx.te
+  when:
     - not ansible_check_mode
     - selinux_present.rc > 0
 
 - name: Build SELinux policy
   command: /usr/bin/semodule_package -o /tmp/unicorn_nginx.pp -m /tmp/unicorn_nginx.mod
-  when: 
+  when:
     - not ansible_check_mode
     - selinux_present.rc > 0
 
 - name: Apply SELinux policy
   command: /usr/sbin/semodule -i /tmp/unicorn_nginx.pp
-  when: 
+  when:
     - not ansible_check_mode
     - selinux_present.rc > 0
 
@@ -57,7 +56,7 @@
   file:
     path: /tmp/unicorn_nginx.te
     state: absent
-  when: 
+  when:
     - not ansible_check_mode
     - selinux_present.rc > 0
 

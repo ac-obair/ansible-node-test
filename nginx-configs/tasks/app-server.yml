@@ -1,5 +1,4 @@
 ---
-
 - name: Copy init.d script for app servers
   template:
     src: "app_server_init_script.j2"

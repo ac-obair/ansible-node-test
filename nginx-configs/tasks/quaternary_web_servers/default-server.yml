@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for default-server
   template:
     src: "server/quaternary_web_servers/default.server.conf.j2"
