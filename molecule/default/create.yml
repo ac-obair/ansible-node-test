@@ -12,20 +12,16 @@
       command: az storage account keys list -g "terraform-remote-state" -n "actfstate" --subscription "DPD" --query "[0].value" --output tsv
       changed_when: false
       register: access_key
-
-    - name: Initialise terraform clone of iweb2.arnoldclark.com
+    - name: Initialise terraform clone of {{ molecule_yml.driver.vm_to_clone }}
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: present
-        # force_init: true
-        # backend_config:
-        #    access_key: "{{ access_key.stdout }}"
-        #    upgrade: true
+        force_init: true
+        backend_config:
+           access_key: "{{ access_key.stdout }}"
       environment:
         VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
-        VSPHERE_USER: "e0055059"
-        # VSPHERE_PASSWORD: "{{ molecule_yml.driver.vsphere_password }}"
-        # VSPHERE_USER: "{{ molecule_yml.driver.vsphere_user }}"
+        VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
       register: server
 
     # Mandatory configuration for Molecule to function.
@@ -49,7 +45,7 @@
       set_fact:
         instance_conf: "{{ [instance_config_dict] | map(attribute='ansible_facts.instance_conf_dict') | list }}"
 
-    - name: Dump instance {{ server.outputs.instance_name.value }} config to {{ molecule_instance_config }}
+    - name: Dump instance config for vm {{ server.outputs.instance_name.value }} to {{ molecule_instance_config | basename }}
       copy:
         content: |
           ---
