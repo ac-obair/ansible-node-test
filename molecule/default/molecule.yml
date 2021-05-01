@@ -1,17 +1,19 @@
 ---
 dependency:
   name: galaxy
+# other constants can be set on this object
 driver:
   name: delegated
-  # vsphere_user: e0055059
-  # vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+  vm_to_clone: iweb2.arnoldclark.com
+  vmware_vsphere_user: e0055059
+  # vnware_vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
 lint: |
   set -e
   yamllint .
   ansible-lint
 syntax: |
   set -e
-  ansible-playbook --syntax-check
+  ansible-playbook --syntax-check ../../nginx-configs.yaml
 # platforms.name is used in combination with instance_config_dict to dynamically write the inventory file.
 platforms:
   - name: azure-pipeline-created-iweb-instance
