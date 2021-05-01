@@ -5,10 +5,19 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    - name: Destroying vm clone <uuid>
+    - name: Get vm uuid from terraform output
+      command: terraform output -json
+      args:
+        chdir: ../../terraform/vms
+      changed_when: false
+      register: tf_outputs
+    - name: Convert tf output stdout to json
+      set_fact:
+        server: "{{ tf_outputs.stdout | from_json }}"
+    - name: Destroying vm clone instance_name {{ server.instance_name.value }}
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: absent
       environment:
         VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
-        VSPHERE_USER: "e0055059"
+        VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
