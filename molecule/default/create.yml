@@ -5,14 +5,15 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    # required storage account auth token for terraform init
-    # - name: 
+    # required storage account auth token for terraform init.
+    # - name:
     #   command: az account show || az login
     - name: Get Azure Storage Account access key
       command: az storage account keys list -g "terraform-remote-state" -n "actfstate" --subscription "DPD" --query "[0].value" --output tsv
+      changed_when: false
       register: access_key
 
-    - name: Terraform clone iweb2.arnoldclark.com
+    - name: Initialise terraform clone of iweb2.arnoldclark.com
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: present
@@ -28,11 +29,12 @@
       register: server
 
     # Mandatory configuration for Molecule to function.
+
     - when: server.changed | default(false) | bool
       block:
         - name: Populate instance config dict
           set_fact:
-            # server object is used to gather terraform outputs in order to build a dynamic inventory 
+            # server object is used to gather terraform outputs in order to build a dynamic inventory.
             instance_conf_dict:
               instance: "azure-pipeline-created-iweb-instance"
               address: "{{ server.outputs.instance_ip.value }}"
@@ -41,13 +43,13 @@
               identity_file: "~/.ssh/id_rsa"
           register: instance_config_dict
 
-    # instance_config_dict json output must be wrapped in container [] for map() to work properly, for cases when there are many instances
+    # instance_config_dict json output must be wrapped in container [] for map() to work properly, for cases when there are many instances.
     # this can also be done by fetching vm metadata as var.results []
     - name: Convert instance config dict to a list
       set_fact:
         instance_conf: "{{ [instance_config_dict] | map(attribute='ansible_facts.instance_conf_dict') | list }}"
 
-    - name: Dump instance config
+    - name: Dump instance {{ server.outputs.instance_name.value }} config to {{ molecule_instance_config }}
       copy:
         content: |
           ---

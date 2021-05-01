@@ -2,9 +2,8 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "performing setup tasks"
+    - name: Performing pre-setup tasks
       debug:
         msg: "yolo!"
-    - name: "importing playbook"
-      import_playbook: 
-        name: "../nginx-configs.yaml"
+
+- import_playbook: "../../nginx-configs.yaml"

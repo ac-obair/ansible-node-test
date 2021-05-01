@@ -5,10 +5,7 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    - name: molecule_instance_config
-      debug:
-        msg: "{{ molecule_instance_config }}"
-    - name: destroy <uuid>
+    - name: Destroying vm clone <uuid>
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: absent

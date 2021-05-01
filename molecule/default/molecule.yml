@@ -10,8 +10,9 @@ lint: |
   yamllint .
   ansible-lint
 syntax: |
-    ansible-playbook --syntax-check
-# platforms.name is used in combination with instance_config_dict to dynamically write the inventory file
+  set -e
+  ansible-playbook --syntax-check
+# platforms.name is used in combination with instance_config_dict to dynamically write the inventory file.
 platforms:
   - name: azure-pipeline-created-iweb-instance
 provisioner:
