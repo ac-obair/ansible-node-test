@@ -1,6 +1,6 @@
-- name: Set logrotate to rotate application logs for {{ application }}
+- name: Rotate application logs for {{ application }}
   template:
-    src: logrotate-app-server.j2
+    src: application-logs.j2
     dest: "/etc/logrotate.d/{{ server }}-{{ application }}"
     owner: root
     group: root
