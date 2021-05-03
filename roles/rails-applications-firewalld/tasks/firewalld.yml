@@ -1,0 +1,15 @@
+---
+- name: Open http and https web traffic ports
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop: ["http", "https",]
+
+- name: Open application specific port 8080
+  ansible.posix.firewalld:
+    port: 8080/tcp
+    state: enabled
+    permanent: yes
+    immediate: yes
