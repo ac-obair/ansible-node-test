@@ -30,7 +30,7 @@
     - upstreams
     - locations
     - servers
-    
+
 - name: Enable and start nginx at boot
   service:
     name: nginx

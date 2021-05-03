@@ -1,3 +1,4 @@
+---
 - name: Install web app config files for careers
   template:
     src: "locations/secondary_web_servers/careers.app.conf.j2"

@@ -1,5 +1,4 @@
 ---
-
 - name: Enable EPEL
   yum:
     name: epel-release

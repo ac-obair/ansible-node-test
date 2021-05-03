@@ -1,3 +1,4 @@
+---
 users:
   - name: abyc_external
     databases:
@@ -13,5 +14,5 @@ users:
         - "%"
       grants:
         - "abyc_appdb.*:SELECT,INSERT,DELETE,UPDATE"
-additional_authorized_keys: | 
+additional_authorized_keys: |
   ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAz1rk2zK6bDwWoQLzDBNnWl4Cx8gJ/aiXVueVhQ0qRRhp6WYbWc2VYsxJRHJGRyfUzqlXtbJekEd7yVd06MtgliDJMydwyxIffTdNLp7MjTDLBTEADL4WEStDcR6hZmIUuMPsEgxU5aG8F7acJJnLrNP+wdLbW/5VNT3mevOjrwKupGvrKQWzxAYdoxXYpVdwVITupBfT7HmqsEy7nbpFWW6zfhIEy6xd7dgYn5ZYoZakNUpIwzKi2hhgiqgNbXulF0Ve3+O/FtOqmtSnG6RyL71E3itIWMnLDSrvq8SQvI979udUrOU/iVxv5E6TxoYgFksJFJBZiBb+8O41ObTU1w== go@devops-gocd-dev02

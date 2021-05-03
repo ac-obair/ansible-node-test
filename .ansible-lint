@@ -1,3 +1,4 @@
+---
 # .ansible-lint
 skip_list:  # or 'skip_list' to silence them completely
   - command-instead-of-module  # Using command rather than module

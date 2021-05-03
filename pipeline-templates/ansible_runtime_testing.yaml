@@ -1,3 +1,4 @@
+---
 parameters:
   - name: service_connection
     default: rdp03-ansible-agent-ssh-service-connection

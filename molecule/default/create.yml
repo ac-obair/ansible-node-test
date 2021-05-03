@@ -1,0 +1,54 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: "{{ molecule_no_log }}"
+  tasks:
+    # required storage account auth token for terraform init.
+    # - name:
+    #   command: az account show || az login
+    - name: Get Azure Storage Account access key
+      command: az storage account keys list -g "terraform-remote-state" -n "actfstate" --subscription "DPD" --query "[0].value" --output tsv
+      changed_when: false
+      register: access_key
+    - name: Initialise terraform clone of {{ molecule_yml.driver.vm_to_clone }}
+      community.general.terraform:
+        project_path: "$HOME/ac/ansible-node-test/terraform/vms"
+        state: present
+        force_init: true
+        backend_config:
+           access_key: "{{ access_key.stdout }}"
+      environment:
+        VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+        VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
+      register: server
+
+    # Mandatory configuration for Molecule to function.
+
+    - when: server.changed | default(false) | bool
+      block:
+        - name: Populate instance config dict
+          set_fact:
+            # server object is used to gather terraform outputs in order to build a dynamic inventory.
+            instance_conf_dict:
+              instance: "azure-pipeline-created-iweb-instance"
+              address: "{{ server.outputs.instance_ip.value }}"
+              user: "root"
+              port: "22"
+              identity_file: "~/.ssh/id_rsa"
+          register: instance_config_dict
+
+    # instance_config_dict json output must be wrapped in container [] for map() to work properly, for cases when there are many instances.
+    # this can also be done by fetching vm metadata as var.results []
+    - name: Convert instance config dict to a list
+      set_fact:
+        instance_conf: "{{ [instance_config_dict] | map(attribute='ansible_facts.instance_conf_dict') | list }}"
+
+    - name: Dump instance config for vm {{ server.outputs.instance_name.value }} to {{ molecule_instance_config | basename }}
+      copy:
+        content: |
+          ---
+          # Molecule managed
+          {{ instance_conf | to_nice_yaml(indent=2, width=1337) }}
+        dest: "{{ molecule_instance_config }}"

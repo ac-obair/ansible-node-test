@@ -1,3 +1,4 @@
+---
 parameters:
   - name: service_connection
     default: rdp03-ansible-agent-ssh-service-connection
@@ -6,7 +7,7 @@ parameters:
   - name: tags
     default: ""
   - name: hosts
-    default: "" 
+    default: ""
 
 jobs:
   - job: "deploying"
@@ -21,5 +22,3 @@ jobs:
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
             ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parameters.tags }} --limit ${{ parameters.hosts }}
-
-

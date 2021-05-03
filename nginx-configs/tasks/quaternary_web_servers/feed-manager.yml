@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for feed-manager
   template:
     src: "server/quaternary_web_servers/feed-manager.server.conf.j2"

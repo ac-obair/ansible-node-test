@@ -1,6 +1,0 @@
-- hosts: localhost
-  name: test locally
-  tasks:
-    - name: yolo
-      debug:
-        msg: hello, world!

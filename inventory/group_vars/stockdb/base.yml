@@ -1,5 +1,4 @@
 ---
-
 mariadb_version: 10.1
 mysql_replication_role: 'slave'
 mysql_replication_slave_allow_writes: true
@@ -9,84 +8,84 @@ mysql_replication_master:
     user: stockdb-dev-repl
     pass: "{{ mysql_stockdb_master_pass }}"
 mysql_replication_do_databases:
-  - arnoldclark__co__uk
+    - arnoldclark__co__uk
 mariadb_replicationcheck_user: replicationcheck
 mariadb_replicationcheck_hosts: "{{ ['localhost', '127.0.0.1'] }}"
 mysql_root_password_update: no
 mysql_server_id: 2
 mysql_users:
-   - name: web_builder
-     append_privs: no
-     password: "{{ mysql_web_builder_password }}"
-     databases:
-       hosts:
-         - 10.31.2.45
-         - iutil03.arnoldclark.com
-       grants:
-        - arnoldclark__co__uk.*:SELECT
-        - arnoldclark__co__uk.usr_branches:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_branches_franchise:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_franchise:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_branches_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_branches_franchise_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_franchise_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - web_builder.*:ALL PRIVILEGES
-   - name: image_crawler
-     append_privs: no
-     password: "{{ mysql_image_crawler_password }}"
-     databases:
-       hosts:
-         - 10.31.2.45
-         - iutil03.arnoldclark.com
-       grants:
-        - arnoldclark__co__uk.*:SELECT
-        - arnoldclark__co__uk.usr_car_images:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_car_images_tmp:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - arnoldclark__co__uk.usr_car_images_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
-        - web_builder.*:ALL PRIVILEGES
-   - name: dev_dumper
-     append_privs: no
-     password: ""
-     databases:
-       hosts:
-         - "%"
-       grants:
-        - arnoldclark__co__uk.*:SELECT,LOCK TABLES
-        - web_builder.*:SELECT,LOCK TABLES
-   - name: onevehicle
-     append_privs: no
-     password: "{{ onevehicle_password }}"
-     databases:
-       hosts:
-         - "%"
-       grants:
-        - arnoldclark__co__uk.*:SELECT,CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+    - name: web_builder
+      append_privs: no
+      password: "{{ mysql_web_builder_password }}"
+      databases:
+          hosts:
+              - 10.31.2.45
+              - iutil03.arnoldclark.com
+          grants:
+              - arnoldclark__co__uk.*:SELECT
+              - arnoldclark__co__uk.usr_branches:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_branches_franchise:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_franchise:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_branches_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_branches_franchise_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_franchise_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - web_builder.*:ALL PRIVILEGES
+    - name: image_crawler
+      append_privs: no
+      password: "{{ mysql_image_crawler_password }}"
+      databases:
+          hosts:
+              - 10.31.2.45
+              - iutil03.arnoldclark.com
+          grants:
+              - arnoldclark__co__uk.*:SELECT
+              - arnoldclark__co__uk.usr_car_images:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_car_images_tmp:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - arnoldclark__co__uk.usr_car_images_backup:CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
+              - web_builder.*:ALL PRIVILEGES
+    - name: dev_dumper
+      append_privs: no
+      password: ""
+      databases:
+          hosts:
+              - "%"
+          grants:
+              - arnoldclark__co__uk.*:SELECT,LOCK TABLES
+              - web_builder.*:SELECT,LOCK TABLES
+    - name: onevehicle
+      append_privs: no
+      password: "{{ onevehicle_password }}"
+      databases:
+          hosts:
+              - "%"
+          grants:
+              - arnoldclark__co__uk.*:SELECT,CREATE,ALTER,DROP,INSERT,UPDATE,DELETE
 
 mysql_databases:
-  - name: arnoldclark__co__uk
-    collation: utf8mb4_general_ci
-    encoding: utf8mb4
-  - name: web_builder
-    collation: utf8mb4_general_ci
-    encoding: utf8mb4
+    - name: arnoldclark__co__uk
+      collation: utf8mb4_general_ci
+      encoding: utf8mb4
+    - name: web_builder
+      collation: utf8mb4_general_ci
+      encoding: utf8mb4
 
 auter_cron_prep_spec: "0 5 * * Mon root"
 auter_cron_apply_spec: "0 6 * * Mon root"
 
 nrpe_allowed_hosts:
- - 127.0.0.1
- - sysadminicinga.arnoldclark.com
- - 10.150.232.18
- - 10.150.233.32
+    - 127.0.0.1
+    - sysadminicinga.arnoldclark.com
+    - 10.150.232.18
+    - 10.150.233.32
 
 icinga_servers:
- - sysadmin-icinga01.arnoldclark.com
- - sysadmin-icinga02.arnoldclark.com
+    - sysadmin-icinga01.arnoldclark.com
+    - sysadmin-icinga02.arnoldclark.com
 vsphere_site: AllisonStr
 hosts_cfg: hosts_ALS.cfg
 
 checks:
-  nrpe_check_disk_root: check_nrpe!check_root_disk
-  nrpe_check_disk_space: check_nrpe!check_disk_space
-  nrpe_check_maria_process: check_nrpe!check_maria_proc
-  nrpe_check_sql_port: check_nrpe!check_db_port
+    nrpe_check_disk_root: check_nrpe!check_root_disk
+    nrpe_check_disk_space: check_nrpe!check_disk_space
+    nrpe_check_maria_process: check_nrpe!check_maria_proc
+    nrpe_check_sql_port: check_nrpe!check_db_port

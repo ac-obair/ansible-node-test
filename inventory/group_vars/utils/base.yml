@@ -1,3 +1,4 @@
+---
 apply_host_file: true
 gems_as_services:
   - name: redis-stat

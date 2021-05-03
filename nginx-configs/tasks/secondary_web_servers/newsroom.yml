@@ -1,3 +1,4 @@
+---
 - name: Install web app config files for newsroom
   template:
     src: "locations/secondary_web_servers/newsroom.app.conf.j2"

@@ -1,3 +1,4 @@
+---
 haproxy_template_file: haproxy-sag.cfg.j2
 haproxy_generated_config_file: haproxy-generated.cfg.devsag
 haproxy_monitoring_port: 4443

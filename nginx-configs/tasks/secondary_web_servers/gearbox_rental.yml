@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for gearbox_rental
   template:
     src: "server/secondary_web_servers/gearbox_rental.server.conf.j2"

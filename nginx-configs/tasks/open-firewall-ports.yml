@@ -1,5 +1,4 @@
 ---
-
 - name: Enable HTTP and HTTPS
   ansible.posix.firewalld:
     service: "{{ item }}"

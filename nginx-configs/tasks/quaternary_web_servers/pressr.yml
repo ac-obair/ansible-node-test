@@ -1,3 +1,4 @@
+---
 - name: Install web server config files for pressr
   template:
     src: "server/quaternary_web_servers/pressr.server.conf.j2"

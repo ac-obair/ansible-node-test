@@ -1,3 +1,4 @@
+---
 nginx_default_server_tls: true
 nginx_default_server_cert: tls/iweb8.arnoldclark.com.bundle.pem
 nginx_default_server_cert_key: tls/iweb8.arnoldclark.com.key

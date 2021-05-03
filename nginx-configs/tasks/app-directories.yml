@@ -1,5 +1,4 @@
 ---
-
 - name: Create web root directories
   file:
     path: "{{ webapps_root }}/{{ item.name }}"
