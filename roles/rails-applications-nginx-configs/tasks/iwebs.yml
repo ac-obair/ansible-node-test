@@ -1,9 +1,0 @@
----
-- name: Nginx config files for acdotcom_development_environment by application
-  block:
-  - import_tasks: "primary_web_servers/acdotcom.yml"
-    notify: "restart-nginx"
-    tags: ["acdotcom", "all_rails_applications"]
-  - import_tasks: "primary_web_servers/gearbox.yml"
-    notify: "restart-nginx"
-    tags: ["gearbox", "all_rails_applications"]

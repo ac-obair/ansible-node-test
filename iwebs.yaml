@@ -11,11 +11,14 @@
         workers: 2
         delayed_job_workers: 2
         environment: production
+        template: primary_web_servers
       block:
         - import_role: 
             name: rails-applications-environment
         - import_role:
             name: rails-applications-nginx-configs
+        - import_role:
+            name: rails-applications-nginx-application-configs
       tags: ["acdotcom"]
 
     - name: gearbox
@@ -23,13 +26,15 @@
         application: gearbox
         server: unicorn
         environment: production
+        template: primary_web_servers
       block:
         - import_role:
             name: rails-applications-environment
         - import_role: 
-            name: rails-applications-nginx-configs
+            name: rails-applications-nginx-application-configs
       tags: ["gearbox"]
 
+  #  - role: rails-applications-nginx-configs
   #  - role: rails-applications-logrotate
   #  - role: rails-applications-firewalld
   #  - role: rails-applications-selinux
