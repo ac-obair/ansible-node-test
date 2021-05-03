@@ -6,4 +6,4 @@
       debug:
         msg: "yolo!"
 
-- import_playbook: "../../nginx-configs.yaml"
+- import_playbook: "../../iwebs.yaml"

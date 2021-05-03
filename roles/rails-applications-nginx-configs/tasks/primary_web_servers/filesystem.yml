@@ -1,0 +1,73 @@
+---
+- name: Create web app root directory
+  file:
+    path: "/data/webapps/{{ item }}"
+    state: directory
+    owner: deploy
+    group: deploy
+    setype: etc_runtime_t
+    mode: 0755
+  loop: "{{ applications }}"
+
+- name: Create directory for holding deployed application instances
+  file:
+    path: "/data/webapps/{{ item }}/releases"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755
+  loop: "{{ applications }}"
+
+- name: Create directory structure per app
+  file:
+    path: "/data/webapps/{{ item }}/repo"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755
+  loop: "{{ applications }}"
+
+- name: Create directory for holding shared ansible-managed config
+  file:
+    path: "/data/webapps/{{ item }}/shared/config"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755
+  loop: "{{ applications }}"
+
+- name: Create directory for application server pid files
+  file:
+    path: "/data/webapps/{{ item }}/shared/tmp/pids"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755
+  loop: "{{ applications }}"
+
+- name: Create directory for application server socket files
+  file:
+    path: "/data/webapps/{{ item }}/shared/tmp/sockets"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755  
+  loop: "{{ applications }}"
+
+- name: Create directory for application logs
+  file:
+    path: "/data/webapps/{{ item }}/shared/tmp/sockets"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: 0755  
+  loop: "{{ applications }}"
+
+- name: Link application logs to /var/log 
+  file:
+    src: "/data/webapps/{{ item }}/shared/log"
+    dest: "/var/log/{{ item }}"
+    state: link
+    force: yes
+  check_mode: no
+  loop: "{{ applications }}"

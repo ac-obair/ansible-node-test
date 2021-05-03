@@ -1,0 +1,15 @@
+- name: Copy delayed job daemons systemd unit file for {{ application }}
+  template:
+    src: "delayedjob-systemd-service.j2"
+    dest: "/etc/systemd/system/delayedjob_{{ application }}.service"
+    mode: 0755
+    owner: root
+    group: root
+  register: systemd_job_daemon_result
+
+- name: Ensure delayedjob daemons launch at system start up for {{ application }}
+  systemd:
+    name: "delayedjob_{{ application }}"
+    enabled: yes
+    daemon_reload: yes
+  ignore_errors: "{{ ansible_check_mode }}"

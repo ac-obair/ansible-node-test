@@ -1,0 +1,36 @@
+---
+- name: Enable EPEL
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install Dependencies
+  yum:
+    name:
+      - bison
+      - byacc
+      - cscope
+      - ctags
+      - cvs
+      - diffstat
+      - doxygen
+      - flex
+      - gcc
+      - gcc-gfortran
+      - gettext
+      - indent
+      - intltool
+      - libtool
+      - patchutils
+      - rcs
+      - redhat-rpm-config
+      - rpm-build
+      - subversion
+      - swig
+      - systemtap
+      - checkpolicy
+      - policycoreutils-python
+      - ImageMagick-devel
+      - jpegoptim
+      - optipng
+    state: present

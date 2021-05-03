@@ -1,0 +1,23 @@
+---
+- name: Copy init.d script used in systemd service files for {{ application }}
+  template:
+    src: "app_server_init_script.j2"
+    dest: "/etc/init.d/{{ server }}-{{ application }}"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create systemd service unit for {{ application }}
+  template:
+    src: systemd-service.j2
+    dest: "/etc/systemd/system/{{ server }}-{{ application }}.service"
+    mode: 0755
+    owner: root
+    group: root
+  register: systemd_app_server_result
+
+- name: Ensure app launch at system start up for {{ application }}
+  systemd:
+    name: "{{ server }}-{{ application }}"
+    enabled: yes
+    daemon_reload: yes

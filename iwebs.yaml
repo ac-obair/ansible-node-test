@@ -1,0 +1,40 @@
+---
+- hosts: all
+  remote_user: root
+  vars:
+    shared_var_constant_example: 1
+  tasks:
+    - name: acdotcom
+      vars:
+        application: acdotcom
+        server: unicorn
+        workers: 2
+        delayed_job_workers: 2
+        environment: production
+      block:
+        - name: Acdotcom environment
+          import_role: 
+            name: rails-applications-environment
+        - name: Acdotcom nginx configs
+          import_role:
+            name: rails-applications-nginx-configs
+      tags: ["acdotcom"]
+
+    - name: gearbox
+      vars:
+        application: gearbox
+        server: unicorn
+        environment: production
+      block:
+        - name: Gearbox environment
+          import_role:
+            name: rails-applications-environment
+        - name: Gearbox nginx configs
+          import_role: 
+            name: rails-applications-nginx-configs
+      tags: ["gearbox"]
+
+  #  - role: rails-applications-logrotate
+  #  - role: rails-applications-firewalld
+  #  - role: rails-applications-selinux
+  #  - role: rails-applications-tls

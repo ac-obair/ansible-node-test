@@ -1,0 +1,121 @@
+user nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    server_tokens off;
+    proxy_set_header X-Request-Start "t=${msec}";
+
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile     on;
+    tcp_nopush   on;
+    tcp_nodelay  on;
+
+    keepalive_timeout  65;
+
+    gzip on;
+    gzip_http_version 1.0;
+    gzip_comp_level 4;
+    gzip_proxied any;
+    gzip_min_length 500;
+    gzip_disable "MSIE [1-6]\.";
+    gzip_types text/plain text/xml text/css text/comma-separated-values
+               text/javascript application/json application/x-javascript
+               application/atom+xml application/javascript image/svg+xml;
+
+    map $http_origin $newsroom_cors_header {
+      "~^https?://[^/]+\.acvm\.com(:[0-9]+)?$" "$http_origin";
+      "~^https?://autocentre(-dev)?\.acvm\.com(:[0-9]+)?$" "$http_origin";
+      "~^https?://autocentre(-dev)?\.activacontracts\.co.uk(:[0-9]+)?$" "$http_origin";
+      "~^https?://autocentre(-dev)?\.arnoldclarkrental\.com(:[0-9]+)?$" "$http_origin";
+      default "";
+    }
+
+    # Used for newrelic infra when required, currently set up manually.
+    # See roles/newrelic-server/README.md for details.
+    server {
+      listen 4445;
+      server_name _;
+      location /status {
+        stub_status on;
+        allow 127.0.0.1;
+        deny all;
+      }
+    }
+
+    server{
+      listen 80 default_server;
+      listen 443 ssl default_server;
+      ssl_certificate /etc/pki/tls/certs/iweb2.arnoldclark.com.crt.pem;
+      ssl_certificate_key /etc/pki/tls/private/iweb2.arnoldclark.com.key.pem;
+      server_name _;
+
+      client_body_timeout   10;
+      client_header_timeout 10;
+      keepalive_timeout     5 5;
+      send_timeout          10;
+
+      client_body_buffer_size     8k;
+      client_header_buffer_size   8k;
+      client_max_body_size        8k;
+      large_client_header_buffers 2 8k;
+
+      location /cdn {
+        return 301 https://www.arnoldclark.com$request_uri;
+      }
+
+      root /usr/local/nginx/html;
+      include /etc/nginx/conf.d/locations/acdotcom.app.conf;
+      include /etc/nginx/conf.d/locations/newsroom.app.conf;
+      include /etc/nginx/conf.d/locations/branch-manager.app.conf;
+      include /etc/nginx/conf.d/locations/reservations.app.conf;
+      include /etc/nginx/conf.d/locations/deal-manager.app.conf;
+      include /etc/nginx/conf.d/locations/payment-manager.app.conf;
+      include /etc/nginx/conf.d/locations/motorway_landing_page.app.conf;
+
+      location /sell-my-car {
+        try_files $uri @abyc;
+        root /data/webapps/abyc/current/public;
+        client_max_body_size 20M;
+        client_body_buffer_size 20M;
+        location /sell-my-car/favicon {
+          expires 1w;
+          add_header Cache-Control "public";
+        }
+        location /sell-my-car/assets {
+          expires 1y;
+          add_header Cache-Control "public";
+        }
+        location /sell-my-car/robots.txt {
+          expires -1;
+        }
+      }
+
+      location @abyc {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_redirect off;
+        proxy_pass http://abyc;
+      }
+
+      error_page 500 502 503 504 /500.html;
+    }
+
+    include conf.d/upstreams/*.conf;
+    include conf.d/servers/*.conf;
+}
