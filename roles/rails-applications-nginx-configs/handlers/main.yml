@@ -8,5 +8,5 @@
 - name: reload-nginx
   service: name=nginx state=reloaded enabled=yes
 
-- name: reload-firewalld
-  command: "firewall-cmd --reload"
+- name: restart-logrotate
+  service: name=logrotate state=restarted

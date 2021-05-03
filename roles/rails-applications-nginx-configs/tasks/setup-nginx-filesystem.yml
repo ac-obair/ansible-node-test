@@ -18,9 +18,3 @@
     owner: deploy
     group: deploy
     mode: 0755
-
-- name: Ensure nginx launch on system start-up
-  service:
-    name: nginx
-    enabled: yes
-    state: started

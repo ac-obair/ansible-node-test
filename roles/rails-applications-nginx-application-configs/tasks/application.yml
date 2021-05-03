@@ -58,3 +58,9 @@
     owner: root
     mode: 0644
   when: ([role_path, "files/upstreams", template, application + ".upstream.conf" ] | join('/')) is file
+
+- name: Ensure nginx launches on system start-up
+  service:
+    name: nginx
+    enabled: yes
+    state: started

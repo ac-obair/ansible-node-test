@@ -1,5 +1,5 @@
 ---
-- name: Copying nginx.conf for {{ template }}
+- name: Install nginx.conf for {{ template }}
   copy:
     src: "{{ template }}/nginx.conf"
     dest: /etc/nginx/nginx.conf
