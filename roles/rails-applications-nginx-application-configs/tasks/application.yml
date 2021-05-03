@@ -1,0 +1,60 @@
+---
+- name: Create nginx conf.d/upstreams directory
+  file:
+    path: "/etc/nginx/conf.d/upstreams"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create nginx conf.d/locations directory
+  file:
+    path: "/etc/nginx/conf.d/locations"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create nginx conf.d/servers directory
+  file:
+    path: "/etc/nginx/conf.d/servers"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# some servers do not have a default.server.conf deployed, run only when the file exists for {{ application }}
+- name: Install nginx default-server config file {{ template }}
+  copy:
+    src: "servers/{{ template }}/default.server.conf"
+    dest: "/etc/nginx/conf.d/servers/default.server.conf"
+    owner: root
+    mode: 0644
+  when: ([role_path, "files/servers", template, "default.server.conf" ] | join('/')) is file
+
+# some applications do not have a {{ application }}.server.conf deployed, run only when the file exists for {{ application }}
+- name: Install web server config files for {{ application }}
+  copy:
+    src: "servers/{{ template }}/{{ application }}.server.conf"
+    dest: "/etc/nginx/conf.d/servers/{{ application }}.server.conf"
+    owner: root
+    mode: 0644
+  when: ([role_path, "files/servers", template, application + ".server.conf" ] | join('/')) is file
+
+# some applications do not have a {{ application }}.app.conf deployed, run only when the file exists for {{ application }}
+- name: Install web app config files for {{ application }}
+  copy:
+    src: "locations/{{ template }}/{{ application }}.app.conf"
+    dest: "/etc/nginx/conf.d/locations/{{ application }}.app.conf"
+    owner: root
+    mode: 0644
+  when: ([role_path, "files/locations", template, application + ".app.conf" ] | join('/')) is file
+
+# some applications do not have a {{ application }}.upstream.conf deployed, run only when the file exists for {{ application }}
+- name: Install web app upstream files for {{ application }}
+  copy:
+    src: "upstreams/{{ template }}/{{ application }}.upstream.conf"
+    dest: "/etc/nginx/conf.d/upstreams/{{ application }}.upstream.conf"
+    owner: root
+    mode: 0644
+    when: ([role_path, "files/upstreams", template, application + ".upstream.conf" ] | join('/')) is file
