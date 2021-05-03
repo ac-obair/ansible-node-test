@@ -13,12 +13,12 @@
         environment: production
         template: primary_web_servers
       block:
-        - import_role: 
-            name: rails-applications-environment
         - import_role:
             name: rails-applications-nginx-configs
         - import_role:
             name: rails-applications-nginx-application-configs
+        - import_role: 
+            name: rails-applications-environment
       tags: ["acdotcom"]
 
     - name: gearbox
@@ -29,12 +29,13 @@
         template: primary_web_servers
       block:
         - import_role:
-            name: rails-applications-environment
+            name: rails-applications-nginx-configs
         - import_role: 
             name: rails-applications-nginx-application-configs
+        - import_role:
+            name: rails-applications-environment
       tags: ["gearbox"]
 
-  #  - role: rails-applications-nginx-configs
   #  - role: rails-applications-logrotate
   #  - role: rails-applications-firewalld
   #  - role: rails-applications-selinux
