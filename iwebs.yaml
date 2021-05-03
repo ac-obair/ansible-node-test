@@ -12,11 +12,9 @@
         delayed_job_workers: 2
         environment: production
       block:
-        - name: Acdotcom environment
-          import_role: 
+        - import_role: 
             name: rails-applications-environment
-        - name: Acdotcom nginx configs
-          import_role:
+        - import_role:
             name: rails-applications-nginx-configs
       tags: ["acdotcom"]
 
@@ -26,11 +24,9 @@
         server: unicorn
         environment: production
       block:
-        - name: Gearbox environment
-          import_role:
+        - import_role:
             name: rails-applications-environment
-        - name: Gearbox nginx configs
-          import_role: 
+        - import_role: 
             name: rails-applications-nginx-configs
       tags: ["gearbox"]
 
