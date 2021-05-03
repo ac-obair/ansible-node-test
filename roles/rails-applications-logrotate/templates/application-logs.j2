@@ -1,0 +1,10 @@
+/data/webapps/{{ application }}/shared/log/*.log {
+    copytruncate
+    daily
+    rotate 7
+    maxsize 500M
+    missingok
+    notifempty
+    compress
+    delaycompress
+}
