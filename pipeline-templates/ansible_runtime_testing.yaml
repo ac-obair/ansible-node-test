@@ -6,8 +6,8 @@ parameters:
   - name: playbook
 
 jobs:
-  - job: "end_to_end"
-    displayName: "molecule test"
+  - job: "molecule_test"
+    displayName: "full end to end testing"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
