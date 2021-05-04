@@ -46,5 +46,5 @@ jobs:
           runOptions: "inline"
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
-            pip install --no-warn-script-location --disable-pip-version-check  --use-feature=2020-resolver -r requirements.txt
+            pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
           readyTimeout: "20000"
