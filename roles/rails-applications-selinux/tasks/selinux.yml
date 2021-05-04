@@ -13,12 +13,12 @@
 
 - name: Apply SELinux context to log directory
   command: "restorecon -R /data/webapps/{{ application }}/shared/log"
-  when: error
+  # changed_when: false
 
 - name: Check for existing SELinux module
   shell: "set -e -o pipefail && semodule -l | grep unicorn_nginx"
   failed_when: False
-  changed_when: False
+  # changed_when: False
   register: selinux_present
 
 - name: Copy over SELinux policy
