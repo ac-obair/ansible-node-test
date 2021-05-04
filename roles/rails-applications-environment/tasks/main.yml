@@ -1,5 +1,0 @@
----
-- import_tasks: filesystem.yml
-- import_tasks: application-server.yml
-- import_tasks: delayed-job.yml
-  when: delayed_job_workers is defined

@@ -1,8 +1,0 @@
----
-- name: Install nginx.conf for {{ group_names[0] }}
-  template:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
-    mode: 0644
-    owner: root
-    group: root

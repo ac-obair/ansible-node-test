@@ -1,5 +1,7 @@
 ---
 - hosts: all
+  collections:
+    - arnoldclark.rails_applications
   remote_user: root
   vars:
     shared_var_constant_example: 1

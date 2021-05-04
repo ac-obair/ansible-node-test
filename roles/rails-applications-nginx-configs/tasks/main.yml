@@ -1,6 +1,0 @@
----
-- import_tasks: setup-nginx-filesystem.yml
-- import_tasks: default-nginx-conf-file.yml
-  notify: "restart-nginx"
-- import_tasks: logrotate.yml
-  notify: "restart-logrotate"
