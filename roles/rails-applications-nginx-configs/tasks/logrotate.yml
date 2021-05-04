@@ -1,4 +1,4 @@
-- name: Install nginx logrotate config
+- name: Install nginx logrotate config file
   copy:
     src: nginx-logrotate-conf
     dest: "/etc/logrotate.d/nginx"
