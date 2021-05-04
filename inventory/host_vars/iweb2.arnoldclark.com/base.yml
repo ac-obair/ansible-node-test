@@ -1,4 +1,0 @@
----
-nginx_default_server_tls: true
-nginx_default_server_cert: tls/iweb2.arnoldclark.com.crt.pem
-nginx_default_server_cert_key: tls/iweb2.arnoldclark.com.key.pem
