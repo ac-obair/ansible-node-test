@@ -1,12 +1,14 @@
 ---
 dependency:
   name: galaxy
+  options:
+    collection-file: requirements.yml
 # other constants can be set on this object
 driver:
   name: delegated
   vm_to_clone: iweb2.arnoldclark.com
-  vmware_vsphere_user: e0055059
-  # vnware_vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+  vmware_vsphere_user: ${VMWARE_VSPHERE_USER}
+  vmware_vsphere_password: ${VMWARE_VSPHERE_PASSWORD}
 lint: |
   set -e
   yamllint .
@@ -20,8 +22,8 @@ platforms:
     groups:
       - iwebs
     inventory:
-    group_vars:
-      molecule: true
+      group_vars:
+        molecule: true
 provisioner:
   name: ansible
 verifier:

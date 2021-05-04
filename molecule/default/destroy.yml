@@ -19,5 +19,5 @@
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: absent
       environment:
-        VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+        VSPHERE_PASSWORD: "{{ molecule_yml.driver.vmware_vsphere_password }}"
         VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
