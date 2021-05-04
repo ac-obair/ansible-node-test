@@ -21,6 +21,7 @@ jobs:
   - job: "environment"
     displayName: "create environment"
     pool: "Azure Self-Hosted"
+    dependsOn: "files"
     steps:
       - task: SSH@0
         displayName: "create virtual environment"
@@ -33,18 +34,10 @@ jobs:
             cd azure_pipelines/${{ parameters.pipeline }}
             pyenv local ${{ parameters.pipeline }}
           readyTimeout: "20000"
-      - task: SSH@0
-        displayName: "install requirements"
-        inputs:
-          sshEndpoint: ${{ parameters.service_connection }}
-          runOptions: "inline"
-          inline: |
-            cd azure_pipelines/${{ parameters.pipeline }}
-            pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
-          readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
     pool: "Azure Self-Hosted"
+    dependsOn: "environment"
     steps:
       - task: SSH@0
         displayName: "install requirements"
@@ -53,5 +46,5 @@ jobs:
           runOptions: "inline"
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
-            pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
+            pip install --no-warn-script-location --disable-pip-version-check  --use-feature=2020-resolver -r requirements.txt
           readyTimeout: "20000"
