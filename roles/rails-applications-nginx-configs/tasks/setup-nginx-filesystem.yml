@@ -18,3 +18,27 @@
     owner: deploy
     group: deploy
     mode: 0755
+
+- name: Create nginx conf.d/upstreams directory
+  file:
+    path: /etc/nginx/conf.d/upstreams
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create nginx conf.d/locations directory
+  file:
+    path: /etc/nginx/conf.d/locations
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create nginx conf.d/servers directory
+  file:
+    path: /etc/nginx/conf.d/servers
+    state: directory
+    mode: 0755
+    owner: root
+    group: root

@@ -1,28 +1,4 @@
 ---
-- name: Create nginx conf.d/upstreams directory
-  file:
-    path: "/etc/nginx/conf.d/upstreams"
-    state: directory
-    mode: 0755
-    owner: root
-    group: root
-
-- name: Create nginx conf.d/locations directory
-  file:
-    path: "/etc/nginx/conf.d/locations"
-    state: directory
-    mode: 0755
-    owner: root
-    group: root
-
-- name: Create nginx conf.d/servers directory
-  file:
-    path: "/etc/nginx/conf.d/servers"
-    state: directory
-    mode: 0755
-    owner: root
-    group: root
-
 # some servers do not have a default.server.conf deployed, run only when the file exists for {{ application }}
 - name: Install nginx default-server config file {{ template }}
   copy:
@@ -59,6 +35,7 @@
     mode: 0644
   when: ([role_path, "files/upstreams", template, application + ".upstream.conf" ] | join('/')) is file
 
+# this is here so that breaking config changes can be deployed first before nginx start attempt
 - name: Ensure nginx launches on system start-up
   service:
     name: nginx
