@@ -18,6 +18,9 @@
       community.general.terraform:
         project_path: "$HOME/ac/ansible-node-test/terraform/vms"
         state: absent
+        force_init: true
+        backend_config:
+          access_key: "{{ access_key.stdout }}"
       environment:
         VSPHERE_PASSWORD: "{{ molecule_yml.driver.vmware_vsphere_password }}"
         VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
