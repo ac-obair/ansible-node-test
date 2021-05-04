@@ -24,5 +24,7 @@ platforms:
         molecule: true
 provisioner:
   name: ansible
+  env:
+    COLLECTIONS_PATHS: ${HOME}/.cache/molecule/ansible-node-test/default/collections/ansible_collections/
 verifier:
   name: ansible
