@@ -40,6 +40,7 @@ jobs:
     dependsOn: "environment"
     steps:
       - task: SSH@0
+        continueOnError: true
         displayName: "install requirements"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
