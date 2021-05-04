@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: archops@arnoldclark.com
-  description: Provision rails application environment
+  description: Provision rails selinux environment
   company: ArnoldClark Automobiles ltd
   license: MIT
 

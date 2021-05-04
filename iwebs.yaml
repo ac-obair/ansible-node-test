@@ -23,8 +23,8 @@
             name: rails-applications-environment
         - import_role:
             name: rails-applications-logrotate
-        # - import_role:
-        #     name: rails-applications-selinux
+        - import_role:
+            name: rails-applications-selinux
       tags: ["acdotcom"]
 
     - name: gearbox
@@ -44,8 +44,8 @@
             name: rails-applications-environment
         - import_role:
             name: rails-applications-logrotate
-        # - import_role:
-        #     name: rails-applications-selinux
+        - import_role:
+            name: rails-applications-selinux
       tags: ["gearbox"]
 
   #  - role: rails-applications-tls

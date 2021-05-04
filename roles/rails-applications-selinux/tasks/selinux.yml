@@ -7,14 +7,12 @@
 
 - name: Set SELinux context for log directory
   community.general.sefcontext:
-    target: "{{ webapps_root }}/{{ item.name }}/shared/log(/.*)?"
+    target: "/data/webapps/{{ application }}/shared/log(/.*)?"
     setype: var_log_t
     state: present
-  loop: "{{ rails_applications }}"
 
 - name: Apply SELinux context to log directory
-  command: "restorecon -R {{ webapps_root }}/{{ item.name }}/shared/log"
-  loop: "{{ rails_applications }}"
+  command: "restorecon -R /data/webapps/{{ application }}/shared/log"
   when: error
 
 - name: Check for existing SELinux module
@@ -62,19 +60,10 @@
 
 - name: Set context on custom ports
   seport:
-    ports: "{{ item.value.port }}"
+    ports: "{{ item }}"
     proto: tcp
     reload: yes
     setype: http_port_t
     state: present
-  with_dict: "{{ rails_nginx_server_blocks }}"
-  when: item.value.port is defined
-
-- name: Set context on status port
-  seport:
-    ports: "{{ nginx_status_port }}"
-    proto: tcp
-    reload: yes
-    setype: http_port_t
-    state: present
-  tags: ["nginx"]
+  with_dict: "{{ ports }}"
+  when: ports is defined
