@@ -26,7 +26,6 @@ provisioner:
   name: ansible
   config_options:
     defaults:
-      collections_paths: /home/ansible/.ansible/collections/ansible_collections
       stdout_callback: yaml
 verifier:
   name: ansible
