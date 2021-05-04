@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
   options:
-    collection-file: requirements.yml
+    requirements-file: collections.yml
 # other constants can be set on this object
 driver:
   name: delegated
@@ -13,9 +13,7 @@ lint: |
   set -e
   yamllint .
   ansible-lint
-syntax: |
-  set -e
-  ansible-playbook --syntax-check ../../iwebs.yaml
+  ansible-playbook --syntax-check iwebs.yaml
 # platforms.name is used in combination with instance_config_dict to dynamically write the inventory file.
 platforms:
   - name: azure-pipeline-created-iweb-instance
