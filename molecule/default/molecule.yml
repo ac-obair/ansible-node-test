@@ -13,10 +13,15 @@ lint: |
   ansible-lint
 syntax: |
   set -e
-  ansible-playbook --syntax-check ../../nginx-configs.yaml
+  ansible-playbook --syntax-check ../../iwebs.yaml
 # platforms.name is used in combination with instance_config_dict to dynamically write the inventory file.
 platforms:
   - name: azure-pipeline-created-iweb-instance
+    groups:
+      - iwebs
+    inventory:
+    group_vars:
+      molecule: true
 provisioner:
   name: ansible
 verifier:

@@ -1,0 +1,53 @@
+---
+- hosts: all
+  collections:
+    - arnoldclark.rails_applications
+  remote_user: root
+  vars:
+    shared_var_constant_example: 1
+  tasks:
+    - name: acdotcom
+      vars:
+        application: acdotcom
+        server: unicorn
+        workers: 2
+        delayed_job_workers: 2
+        environment: production
+        template: primary_web_servers
+      block:
+        - import_role:
+            name: rails-applications-nginx-configs
+        - import_role:
+            name: rails-applications-nginx-application-configs
+        - import_role:
+            name: rails-applications-firewalld
+        - import_role: 
+            name: rails-applications-environment
+        - import_role:
+            name: rails-applications-logrotate
+        - import_role:
+            name: rails-applications-selinux
+      tags: ["acdotcom"]
+
+    - name: gearbox
+      vars:
+        application: gearbox
+        server: unicorn
+        environment: production
+        template: primary_web_servers
+      block:
+        - import_role:
+            name: rails-applications-nginx-configs
+        - import_role: 
+            name: rails-applications-nginx-application-configs
+        - import_role:
+            name: rails-applications-firewalld
+        - import_role:
+            name: rails-applications-environment
+        - import_role:
+            name: rails-applications-logrotate
+        - import_role:
+            name: rails-applications-selinux
+      tags: ["gearbox"]
+
+  #  - role: rails-applications-tls
