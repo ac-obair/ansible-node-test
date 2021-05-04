@@ -1,7 +1,0 @@
----
-- name: Install web server config files for pch-affinity
-  template:
-    src: "server/secondary_web_servers/pch-affinity.server.conf.j2"
-    dest: "/etc/nginx/conf.d/servers/pch_affinity.server.conf"
-    owner: root
-    mode: 0644
