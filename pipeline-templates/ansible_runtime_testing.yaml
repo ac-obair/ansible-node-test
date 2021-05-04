@@ -7,13 +7,13 @@ parameters:
 
 jobs:
   - job: "end_to_end"
-    displayName: "full end to end testing"
+    displayName: "molecule test"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
         env:
           PY_COLOR: "1"
-        displayName: "syntax check"
+        displayName: "molecule test"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"

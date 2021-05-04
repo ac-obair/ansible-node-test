@@ -21,7 +21,7 @@
             name: rails-applications-nginx-application-configs
         - import_role:
             name: rails-applications-firewalld
-        - import_role: 
+        - import_role:
             name: rails-applications-environment
         - import_role:
             name: rails-applications-logrotate
@@ -38,7 +38,7 @@
       block:
         - import_role:
             name: rails-applications-nginx-configs
-        - import_role: 
+        - import_role:
             name: rails-applications-nginx-application-configs
         - import_role:
             name: rails-applications-firewalld
@@ -49,5 +49,3 @@
         - import_role:
             name: rails-applications-selinux
       tags: ["gearbox"]
-
-  #  - role: rails-applications-tls
