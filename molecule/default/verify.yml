@@ -6,7 +6,7 @@
   gather_facts: false
   tasks:
     - block:
-        - name: Ensure arnoldclark.com is reachable
+        - name: Ensure arnoldclark.com is reachable 
           uri:
             url: http://localhost
             method: GET
@@ -15,7 +15,8 @@
             status_code: 200
           register: acdotcom
 
-        - assert:
+        - name: Ensure 200 return code for arnoldclark.com
+          assert:
             success_msg: "arnoldclark.com reachable on {{ inventory_hostname }}"
             that:
               - acdotcom.status == 200
