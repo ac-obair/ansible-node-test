@@ -1,3 +1,0 @@
----
-auter_cron_prep_spec: "0 5 * * Tue,Thu,Sat root"
-auter_cron_apply_spec: "0 6 * * Tue,Thu,Sat root"
