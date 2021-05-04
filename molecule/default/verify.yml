@@ -6,7 +6,7 @@
   gather_facts: false
   tasks:
     - block:
-        - name: Ensure arnoldclark.com is reachable 
+        - name: Ensure arnoldclark.com is reachable
           uri:
             url: http://localhost
             method: GET
