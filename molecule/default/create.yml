@@ -49,7 +49,7 @@
       copy:
         owner: ansible
         group: ansible
-        mode: 0644
+        mode: 0755
         content: |
           ---
           # Molecule managed
