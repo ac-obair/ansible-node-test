@@ -14,7 +14,7 @@
       register: access_key
     - name: Initialise terraform clone of {{ molecule_yml.driver.vm_to_clone }}
       community.general.terraform:
-        project_path: "$HOME/azure_pipelines/ansible-node-test/terraform/azure-pipeline-created-iweb-instancevms"
+        project_path: "$HOME/azure_pipelines/ansible-node-test/terraform/azure-pipeline-created-iweb-instance"
         state: present
         force_init: true
         backend_config:
