@@ -27,6 +27,10 @@ jobs:
     dependsOn: "files"
     steps:
       - task: SSH@0
+        env:
+          TEST_VAR: ${VMWARE_VSPHERE_USER}
+          TEST_VAR1: $(VMWARE_VSPHERE_USER)
+          TEST_VAR2: "1"
         displayName: "create virtual environment"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
