@@ -15,17 +15,23 @@
         environment: production
         template: primary_web_servers
       block:
-        - import_role:
+        - name: Configure nginx
+          import_role:
             name: rails-applications-nginx-configs
-        - import_role:
+        - name: Configure nginx for rails application
+          import_role:
             name: rails-applications-nginx-application-configs
-        - import_role:
+        - name: Configure firewalld for rails applications
+          import_role:
             name: rails-applications-firewalld
-        - import_role: 
+        - name: Configure the linux server environment for rails applications
+          import_role:
             name: rails-applications-environment
-        - import_role:
+        - name: Configure logrotate for rails applications
+          import_role:
             name: rails-applications-logrotate
-        - import_role:
+        - name: Configure selinux for rails applications
+          import_role:
             name: rails-applications-selinux
       tags: ["acdotcom"]
 
@@ -36,18 +42,22 @@
         environment: production
         template: primary_web_servers
       block:
-        - import_role:
+        - name: Configure nginx
+          import_role:
             name: rails-applications-nginx-configs
-        - import_role: 
+        - name: Configure nginx for rails application
+          import_role:
             name: rails-applications-nginx-application-configs
-        - import_role:
+        - name: Configure firewalld for rails applications
+          import_role:
             name: rails-applications-firewalld
-        - import_role:
+        - name: Configure the linux server environment for rails applications
+          import_role:
             name: rails-applications-environment
-        - import_role:
+        - name: Configure logrotate for rails applications
+          import_role:
             name: rails-applications-logrotate
-        - import_role:
+        - name: Configure selinux for rails applications
+          import_role:
             name: rails-applications-selinux
       tags: ["gearbox"]
-
-  #  - role: rails-applications-tls

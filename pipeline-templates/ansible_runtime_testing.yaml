@@ -6,28 +6,19 @@ parameters:
   - name: playbook
 
 jobs:
-  - job: "syntax_check"
-    displayName: "syntax checks"
+  - job: "molecule_test"
+    displayName: "end to end testing"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
-        displayName: "syntax check"
+        displayName: "molecule test"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
           inline: |
+            export VMWARE_VSPHERE_USER=$(VMWARE_VSPHERE_USER)
+            export VMWARE_VSPHERE_PASSWORD=$(VMWARE_VSPHERE_PASSWORD)
+            export PY_COLOR="1"
             cd azure_pipelines/${{ parameters.pipeline }}
-            ansible-playbook --syntax-check ${{ parameters.playbook }}.yaml
-          readyTimeout: "20000"
-  - job: "lint"
-    displayName: "linting"
-    pool: "Azure Self-Hosted"
-    steps:
-      - task: SSH@0
-        displayName: "linter"
-        inputs:
-          sshEndpoint: ${{ parameters.service_connection }}
-          runOptions: "inline"
-          inline: |
-            echo "hello, world! from molecule test"
+            molecule test
           readyTimeout: "20000"

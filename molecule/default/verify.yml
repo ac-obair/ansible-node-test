@@ -5,6 +5,18 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - block:
+        - name: Ensure arnoldclark.com is reachable
+          uri:
+            url: http://localhost
+            method: GET
+            headers:
+              Host: arnoldclark.com
+            status_code: 200
+          register: acdotcom
+
+        - name: Ensure 200 return code for arnoldclark.com
+          assert:
+            success_msg: "arnoldclark.com reachable on {{ inventory_hostname }}"
+            that:
+              - acdotcom.status == 200

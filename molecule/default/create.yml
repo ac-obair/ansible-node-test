@@ -5,22 +5,22 @@
   gather_facts: false
   no_log: "{{ molecule_no_log }}"
   tasks:
-    # required storage account auth token for terraform init.
-    # - name:
-    #   command: az account show || az login
+    - name: Ensure account view is set to DPD
+      command: az account set -s DPD
+      changed_when: false
     - name: Get Azure Storage Account access key
       command: az storage account keys list -g "terraform-remote-state" -n "actfstate" --subscription "DPD" --query "[0].value" --output tsv
       changed_when: false
       register: access_key
     - name: Initialise terraform clone of {{ molecule_yml.driver.vm_to_clone }}
       community.general.terraform:
-        project_path: "$HOME/ac/ansible-node-test/terraform/vms"
+        project_path: "$HOME/azure_pipelines/ansible-node-test/terraform/vms"
         state: present
         force_init: true
         backend_config:
-           access_key: "{{ access_key.stdout }}"
+          access_key: "{{ access_key.stdout }}"
       environment:
-        VSPHERE_PASSWORD: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
+        VSPHERE_PASSWORD: "{{ molecule_yml.driver.vmware_vsphere_password }}"
         VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
       register: server
 
@@ -47,6 +47,9 @@
 
     - name: Dump instance config for vm {{ server.outputs.instance_name.value }} to {{ molecule_instance_config | basename }}
       copy:
+        owner: ansible
+        group: ansible
+        mode: 0755
         content: |
           ---
           # Molecule managed
