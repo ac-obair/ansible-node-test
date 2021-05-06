@@ -2,4 +2,4 @@
 collections:
   - name: git@github.com:ac-obair/rails-applications-collection.git
     type: git
-    version: 1.0.3.beta.1
+    version: 1.0.4.beta.1
