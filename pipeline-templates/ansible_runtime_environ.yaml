@@ -5,9 +5,6 @@ parameters:
   - name: pipeline
 
 jobs:
-  - job:
-    steps:
-    - bash: echo $VMWARE_VSPHERE_USER
   - job: "files"
     displayName: "copy files to ACS"
     pool: "Azure Self-Hosted"
