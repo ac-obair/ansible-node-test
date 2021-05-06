@@ -21,6 +21,5 @@ jobs:
           runOptions: "inline"
           inline: |
             export ANSIBLE_FORCE_COLOR="1"
-            
             cd azure_pipelines/${{ parameters.pipeline }}
             ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parameters.tags }} --limit ${{ parameters.hosts }}

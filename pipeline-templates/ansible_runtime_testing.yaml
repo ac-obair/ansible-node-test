@@ -19,7 +19,6 @@ jobs:
             export VMWARE_VSPHERE_USER=$(VMWARE_VSPHERE_USER)
             export VMWARE_VSPHERE_PASSWORD=$(VMWARE_VSPHERE_PASSWORD)
             export PY_COLOR="1"
-            
             cd azure_pipelines/${{ parameters.pipeline }}
             molecule test
           readyTimeout: "20000"
