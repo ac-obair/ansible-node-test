@@ -6,21 +6,17 @@ parameters:
   - name: playbook
 
 jobs:
-  - job:
-    steps:
-    - bash: echo $VMWARE_VSPHERE_USER
   - job: "molecule_test"
     displayName: "end to end testing"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
-        env:
-          PY_COLOR: "1"
         displayName: "molecule test"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
           inline: |
+            export PY_COLOR="1"
             cd azure_pipelines/${{ parameters.pipeline }}
             molecule test
           readyTimeout: "20000"

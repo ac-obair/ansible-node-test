@@ -15,12 +15,11 @@ jobs:
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
         displayName: "ansible-playbook -CD inline"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
           inline: |
+            export ANSIBLE_FORCE_COLOR="1"
             cd azure_pipelines/${{ parameters.pipeline }}
             ansible-playbook ${{ parameters.playbook }}.yaml -CD --tags ${{ parameters.tags }} --limit ${{ parameters.hosts }}
