@@ -29,8 +29,6 @@ jobs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
           inline: |
-            export VMWARE_VSPHERE_USER=$(VMWARE_VSPHERE_USER)
-            env
             pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
             pyenv virtualenv -f ${{ parameters.pipeline }}
             cd azure_pipelines/${{ parameters.pipeline }}
