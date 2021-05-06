@@ -16,6 +16,7 @@
       command: "terraform init -backend-config=access_key={{ access_key.stdout }} -upgrade=true"
       args:
         chdir: ../../terraform/vms
+      changed_when: false
     - name: Get vm uuid from terraform output
       command: terraform output -json
       args:
