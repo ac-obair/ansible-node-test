@@ -5,7 +5,6 @@ provider "vsphere" {
   allow_unverified_ssl = true
 }
 
-
 terraform {
   backend "azurerm" {
     storage_account_name = "actfstate"
