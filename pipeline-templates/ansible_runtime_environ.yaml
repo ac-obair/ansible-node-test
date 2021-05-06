@@ -33,6 +33,7 @@ jobs:
             pyenv virtualenv -f ${{ parameters.pipeline }}
             cd azure_pipelines/${{ parameters.pipeline }}
             pyenv local ${{ parameters.pipeline }}
+            ansible-galaxy collection install -r collections.yml
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
@@ -48,5 +49,5 @@ jobs:
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
             pip install --no-warn-script-location --disable-pip-version-check -r requirements.txt
-            ansible-galaxy collection install -r collection.yml
+            ansible-galaxy collection install -r collections.yml
           readyTimeout: "20000"
