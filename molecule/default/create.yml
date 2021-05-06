@@ -47,8 +47,8 @@
 
     - name: Dump instance config for vm {{ server.outputs.instance_name.value }} to {{ molecule_instance_config | basename }}
       copy:
-        owner: ansible
-        group: ansible
+        owner: "{{ lookup('env','USER') }}"
+        group: archops
         mode: 0755
         content: |
           ---
