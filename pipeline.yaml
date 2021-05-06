@@ -30,7 +30,7 @@ stages:
           pipeline: $(pipeline)
 
   - stage: "ansible_runtime_testing"
-    displayName: "end_to_end"
+    displayName: "molecule_test"
     jobs:
       - template: pipeline-templates/ansible_runtime_testing.yaml
         parameters:

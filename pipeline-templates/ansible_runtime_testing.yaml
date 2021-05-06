@@ -7,12 +7,14 @@ parameters:
 
 jobs:
   - job: "molecule_test"
-    displayName: "full end to end testing"
+    displayName: "end to end testing"
     pool: "Azure Self-Hosted"
     steps:
       - task: SSH@0
         env:
           PY_COLOR: "1"
+          VMWARE_VSPHERE_USER: $(VMWARE_VSPHERE_USER)
+          VMWARE_VSPHERE_PASSWORD: $(VMWARE_VSPHERE_PASSWORD)
         displayName: "molecule test"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
