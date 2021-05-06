@@ -6,6 +6,9 @@ parameters:
   - name: playbook
 
 jobs:
+  - job:
+    steps:
+    - bash: echo $VMWARE_VSPHERE_USER
   - job: "molecule_test"
     displayName: "end to end testing"
     pool: "Azure Self-Hosted"
@@ -13,8 +16,6 @@ jobs:
       - task: SSH@0
         env:
           PY_COLOR: "1"
-          VMWARE_VSPHERE_USER: $(VMWARE_VSPHERE_USER)
-          VMWARE_VSPHERE_PASSWORD: $(VMWARE_VSPHERE_PASSWORD)
         displayName: "molecule test"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}

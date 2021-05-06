@@ -5,6 +5,9 @@ parameters:
   - name: pipeline
 
 jobs:
+  - job:
+    steps:
+    - bash: echo $VMWARE_VSPHERE_USER
   - job: "files"
     displayName: "copy files to ACS"
     pool: "Azure Self-Hosted"
@@ -29,6 +32,7 @@ jobs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
           inline: |
+            env
             pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
             pyenv virtualenv -f ${{ parameters.pipeline }}
             cd azure_pipelines/${{ parameters.pipeline }}
