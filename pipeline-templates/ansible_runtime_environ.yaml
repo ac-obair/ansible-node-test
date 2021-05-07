@@ -23,8 +23,7 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
-      - bash: |
-        echo $(System.PullRequest.SourceBranch)
+      - bash: echo $(System.PullRequest.SourceBranch)
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
