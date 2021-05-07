@@ -9,7 +9,11 @@ jobs:
     displayName: "copy files to ACS"
     pool: "Azure Self-Hosted"
     steps:
-      - bash: echo $(System.PullRequest.SourceBranch)
+      # get the name of branch after /. -> ticket/branch_name
+      - bash: |
+          BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
+          echo "##vso[task.setvariable variable=branch_name]$BRANCH_NAME"
+          echo $(branch_name)
       - task: CopyFilesOverSSH@0
         displayName: "copying"
         inputs:
@@ -31,10 +35,10 @@ jobs:
           runOptions: "inline"
           # this inline script will create a venv of <pipeline_name>-<branch_name>
           inline: |
-            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
-            pyenv virtualenv -f ${{ parameters.pipeline }}
+            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-$(branch_name) && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-$(branch_name)
+            pyenv virtualenv -f ${{ parameters.pipeline }}-$(branch_name)
             cd azure_pipelines/${{ parameters.pipeline }}
-            pyenv local ${{ parameters.pipeline }}
+            pyenv local ${{ parameters.pipeline }}-$(branch_name)
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
