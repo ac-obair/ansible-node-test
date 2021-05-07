@@ -9,12 +9,6 @@ jobs:
     displayName: "copy files to ACS"
     pool: "Azure Self-Hosted"
     steps:
-      # get the name of branch after /. -> ticket/branch_name
-      - bash: |
-          echo "##vso[task.setvariable variable=branch_name;isoutput=true]$(basename $(System.PullRequest.SourceBranch))"
-          echo $(SetVars.branch_name)"
-          echo $(branch_name)
-        name: "set_vars"
       - task: CopyFilesOverSSH@0
         displayName: "copying"
         inputs:
@@ -29,12 +23,6 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
-      # get the name of branch after /. -> ticket/branch_name
-      - bash: |
-          echo "##vso[task.setvariable variable=branch_name;isoutput=true]$(basename $(System.PullRequest.SourceBranch))"
-          echo $(SetVars.branch_name)"
-          echo $(branch_name)
-        name: "set_vars"
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
@@ -42,10 +30,11 @@ jobs:
           runOptions: "inline"
           # this inline script will create a venv of <pipeline_name>-<branch_name>
           inline: |
-            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-$(branch_name) && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-$(branch_name)
-            pyenv virtualenv -f ${{ parameters.pipeline }}-$(branch_name)
+            BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
+            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-${BRANCH_NAME} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-${BRANCH_NAME}
+            pyenv virtualenv -f ${{ parameters.pipeline }}-${BRANCH_NAME}
             cd azure_pipelines/${{ parameters.pipeline }}
-            pyenv local ${{ parameters.pipeline }}-$(branch_name)
+            pyenv local ${{ parameters.pipeline }}-${BRANCH_NAME}
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
