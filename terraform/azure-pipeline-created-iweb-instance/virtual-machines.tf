@@ -2,7 +2,7 @@ resource "random_uuid" "uuid" {
 }
 
 module "azure-pipeline-provision-iweb-instance" {
-  source                  = "../modules/vm"
+  source                  = "git@github.com:ac-obair/vmware-vsphere-clone.git?ref=0.0.1.alpha.1"
   virtual-machine-name    = "${random_uuid.uuid.result}"
   // ip reserved for now, can be extracted for multiple instances with govc
   ip_address              = "10.31.2.10" 

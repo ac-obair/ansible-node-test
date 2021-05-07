@@ -27,12 +27,10 @@ jobs:
         displayName: "create virtual environment"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
-          runOptions: "inline"
-          inline: |
-            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
-            pyenv virtualenv -f ${{ parameters.pipeline }}
-            cd azure_pipelines/${{ parameters.pipeline }}
-            pyenv local ${{ parameters.pipeline }}
+          runOptions: script
+          # this script will create a venv of <pipeline_name>-<branch_name>
+          scriptPath: scripts/ansible_runtime_environ.sh
+          args: "$(System.PullRequest.SourceBranch) ${{ parameters.pipeline }}"
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
@@ -54,7 +52,8 @@ jobs:
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: "inline"
+          # collections are -f installed to update any version change
           inline: |
             cd azure_pipelines/${{ parameters.pipeline }}
-            ansible-galaxy collection install -r collections.yml
+            ansible-galaxy collection install -r collections.yml -f
           readyTimeout: "20000"

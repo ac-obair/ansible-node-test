@@ -17,22 +17,22 @@
       block:
         - name: Configure nginx
           import_role:
-            name: rails-applications-nginx-configs
+            name: nginx-configs
         - name: Configure nginx for rails application
           import_role:
-            name: rails-applications-nginx-application-configs
+            name: nginx-application-configs
         - name: Configure firewalld for rails applications
           import_role:
-            name: rails-applications-firewalld
+            name: firewalld
         - name: Configure the linux server environment for rails applications
           import_role:
-            name: rails-applications-environment
+            name: environment
         - name: Configure logrotate for rails applications
           import_role:
-            name: rails-applications-logrotate
+            name: logrotate
         - name: Configure selinux for rails applications
           import_role:
-            name: rails-applications-selinux
+            name: selinux
       tags: ["acdotcom"]
 
     - name: gearbox
@@ -44,20 +44,20 @@
       block:
         - name: Configure nginx
           import_role:
-            name: rails-applications-nginx-configs
+            name: nginx-configs
         - name: Configure nginx for rails application
           import_role:
-            name: rails-applications-nginx-application-configs
+            name: nginx-application-configs
         - name: Configure firewalld for rails applications
           import_role:
-            name: rails-applications-firewalld
+            name: firewalld
         - name: Configure the linux server environment for rails applications
           import_role:
-            name: rails-applications-environment
+            name: environment
         - name: Configure logrotate for rails applications
           import_role:
-            name: rails-applications-logrotate
+            name: logrotate
         - name: Configure selinux for rails applications
           import_role:
-            name: rails-applications-selinux
+            name: selinux
       tags: ["gearbox"]
