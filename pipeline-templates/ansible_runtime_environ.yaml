@@ -27,9 +27,10 @@ jobs:
         displayName: "create virtual environment"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
-          runOptions: Commands
+          runOptions: script
           # this script will create a venv of <pipeline_name>-<branch_name>
-          commands: azure_pipelines/${{ parameters.pipeline }}/scripts/ansible_runtime_environ.sh
+          scriptPath: azure_pipelines/${{ parameters.pipeline }}/scripts/ansible_runtime_environ.sh
+          args: "$(System.PullRequest.SourceBranch) ${{ parameters.pipeline }}"
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
