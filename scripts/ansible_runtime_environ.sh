@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
-pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-${BRANCH_NAME} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-${BRANCH_NAME} || echo Creating venv for the first time.
-PYENV_VERSION=3.9.2 pyenv virtualenv -f ${{ parameters.pipeline }}-${BRANCH_NAME}
-cd $HOME/azure_pipelines/${{ parameters.pipeline }} && pyenv local ${{ parameters.pipeline }}-${BRANCH_NAME}
+COMPLETE_BRANCH_NAME=$1
+REPO_NAME=$2
+SHORT_BRANCH_NAME=$(basename ${COMPLETE_BRANCH_NAME})
+ENVIRON=${REPO_NAME}-${SHORT_BRANCH_NAME}
+
+pyenv virtualenvs --bare | grep ${ENVIRON} && pyenv virtualenv-delete -f ${ENVIRON} || echo Creating venv for the first time.
+PYENV_VERSION=3.9.2 pyenv virtualenv -f ${ENVIRON}
+cd $HOME/azure_pipelines/${REPO_NAME} && pyenv local ${ENVIRON}
