@@ -23,6 +23,9 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
+    steps:
+    - bash: |
+        echo $(System.PullRequest.SourceBranch)
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
@@ -30,10 +33,10 @@ jobs:
           runOptions: "inline"
           # this inline script will create a venv of <pipeline_name>-<branch_name>
           inline: |
-            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-$(Build.SourceBranchName) && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-$(Build.SourceBranchName)
-            pyenv virtualenv -f ${{ parameters.pipeline }}-$(Build.SourceBranchName)
-            cd azure_pipelines/${{ parameters.pipeline }}-$(Build.SourceBranchName)
-            pyenv local ${{ parameters.pipeline }}-$(Build.SourceBranchName)
+            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}
+            pyenv virtualenv -f ${{ parameters.pipeline }}
+            cd azure_pipelines/${{ parameters.pipeline }}
+            pyenv local ${{ parameters.pipeline }}
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
