@@ -13,7 +13,9 @@ jobs:
         displayName: "copying"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
-          contents: "**"
+          contents: |
+            **
+            !pipeline-templates
           targetFolder: "azure_pipelines/${{ parameters.pipeline }}"
           readyTimeout: "20000"
           cleanTargetFolder: true
