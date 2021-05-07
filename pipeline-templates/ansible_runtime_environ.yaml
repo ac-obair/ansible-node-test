@@ -23,14 +23,6 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
-      - bash: echo from $(hostname) $(System.PullRequest.SourceBranch)
-      - task: SSH@0
-        displayName: "output var on rdp03"
-        inputs:
-          sshEndpoint: ${{ parameters.service_connection }}
-          # this inline script will create a venv of <pipeline_name>-<branch_name>
-          commands: echo from $(hostname) $(System.PullRequest.SourceBranch)
-          readyTimeout: "20000"
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
@@ -39,7 +31,7 @@ jobs:
           # this inline script will create a venv of <pipeline_name>-<branch_name>
           inline: |
             BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
-            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-${BRANCH_NAME} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-${BRANCH_NAME}
+            pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-${BRANCH_NAME} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-${BRANCH_NAME} || echo Creating venv for the first time.
             pyenv virtualenv -f ${{ parameters.pipeline }}-${BRANCH_NAME}
             cd azure_pipelines/${{ parameters.pipeline }}
             pyenv local ${{ parameters.pipeline }}-${BRANCH_NAME}
