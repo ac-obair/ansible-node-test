@@ -30,6 +30,8 @@ jobs:
           runOptions: "inline"
           # this inline script will create a venv of <pipeline_name>-<branch_name>
           inline: |
+            echo $-
+            env
             BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
             pyenv local 3.9.2
             pyenv virtualenvs --bare | grep ${{ parameters.pipeline }}-${BRANCH_NAME} && pyenv virtualenv-delete -f ${{ parameters.pipeline }}-${BRANCH_NAME} || echo Creating venv for the first time.
