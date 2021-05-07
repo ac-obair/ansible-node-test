@@ -27,8 +27,9 @@ jobs:
         displayName: "create virtual environment"
         inputs:
           sshEndpoint: ${{ parameters.service_connection }}
-          # this inline script will create a venv of <pipeline_name>-<branch_name>
-          commands: ./test.sh
+          runOptions: script
+          # this script will create a venv of <pipeline_name>-<branch_name>
+          scriptPath: azure_pipelines/${{ parameters.pipeline }}/scripts/ansible_runtime_environ.sh
           readyTimeout: "20000"
   - job: "dependencies"
     displayName: "installing dependencies"
