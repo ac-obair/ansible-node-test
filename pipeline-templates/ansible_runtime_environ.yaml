@@ -23,6 +23,14 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
+      - bash: echo from $(hostname) $(System.PullRequest.SourceBranch)
+      - task: SSH@0
+        displayName: "output var on rdp03"
+        inputs:
+          sshEndpoint: ${{ parameters.service_connection }}
+          # this inline script will create a venv of <pipeline_name>-<branch_name>
+          commands: echo from $(hostname) $(System.PullRequest.SourceBranch)
+          readyTimeout: "20000"
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
