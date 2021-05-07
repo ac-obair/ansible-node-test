@@ -11,9 +11,10 @@ jobs:
     steps:
       # get the name of branch after /. -> ticket/branch_name
       - bash: |
-          BRANCH_NAME=$(basename $(System.PullRequest.SourceBranch))
-          echo "##vso[task.setvariable variable=branch_name]$BRANCH_NAME"
+          echo "##vso[task.setvariable variable=branch_name;isoutput=true]$(basename $(System.PullRequest.SourceBranch))"
+          echo $(SetVars.branch_name)"
           echo $(branch_name)
+        name: "set_vars"
       - task: CopyFilesOverSSH@0
         displayName: "copying"
         inputs:
@@ -28,6 +29,12 @@ jobs:
     pool: "Azure Self-Hosted"
     dependsOn: "files"
     steps:
+      # get the name of branch after /. -> ticket/branch_name
+      - bash: |
+          echo "##vso[task.setvariable variable=branch_name;isoutput=true]$(basename $(System.PullRequest.SourceBranch))"
+          echo $(SetVars.branch_name)"
+          echo $(branch_name)
+        name: "set_vars"
       - task: SSH@0
         displayName: "create virtual environment"
         inputs:
