@@ -33,7 +33,7 @@
         state: absent
         force_init: true
         backend_config:
-        access_key: "{{ access_key.stdout }}"
+          access_key: "{{ access_key.stdout }}"
       environment:
         VSPHERE_PASSWORD: "{{ molecule_yml.driver.vmware_vsphere_password }}"
         VSPHERE_USER: "{{ molecule_yml.driver.vmware_vsphere_user }}"
