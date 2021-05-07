@@ -29,7 +29,7 @@ jobs:
           sshEndpoint: ${{ parameters.service_connection }}
           runOptions: script
           # this script will create a venv of <pipeline_name>-<branch_name>
-          scriptPath: azure_pipelines/${{ parameters.pipeline }}/scripts/ansible_runtime_environ.sh
+          scriptPath: scripts/ansible_runtime_environ.sh
           args: "$(System.PullRequest.SourceBranch) ${{ parameters.pipeline }}"
           readyTimeout: "20000"
   - job: "dependencies"
